@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
 
-        File plikWyjsciowy = new File("Bot.mq4");
+        File plikWyjsciowy = new File(args[0]+".mq4");
         FileWriter fileWriter = new FileWriter(plikWyjsciowy);
         BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 

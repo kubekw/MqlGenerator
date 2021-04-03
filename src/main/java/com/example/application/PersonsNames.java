@@ -13,15 +13,8 @@ public class PersonsNames {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
-    private String surname;
 
-    public String getSurname() {
-        return surname;
-    }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
 
     public PersonsNames() {
     }
@@ -38,10 +31,7 @@ public class PersonsNames {
         this.name = name;
     }
 
-    public PersonsNames(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
-    }
+
 
     public int getId() {
         return id;

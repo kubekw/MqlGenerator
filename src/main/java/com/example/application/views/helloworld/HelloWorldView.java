@@ -2,8 +2,10 @@ package com.example.application.views.helloworld;
 
 import com.example.application.NamesRepo;
 import com.example.application.PersonsNames;
+import com.example.application.model.Main;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -14,6 +16,7 @@ import com.example.application.views.main.MainView;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.component.dependency.CssImport;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,6 @@ public class HelloWorldView extends HorizontalLayout {
 
 
     private TextField name;
-    private TextField surname;
     private Button sayHello;
     private final NamesRepo namesRepo ;
 
@@ -51,21 +53,30 @@ public class HelloWorldView extends HorizontalLayout {
 
 
         addClassName("hello-world-view");
-        name = new TextField("Your name");
-        surname = new TextField("Your surname");
-        sayHello = new Button("Say hello");
-        add(name, surname, sayHello);
+        name = new TextField("Podaj Imię Bocika");
+        sayHello = new Button("Generuj");
+        add(name, sayHello);
         setVerticalComponentAlignment(Alignment.END, name, sayHello);
 
         sayHello.addClickListener(e -> {
             if(!name.isEmpty()){
-            Notification.show("Hello "+name.getValue(),3000, Notification.Position.MIDDLE);
-            namesRepo.save(new PersonsNames(name.getValue(),surname.getValue()));
+            Notification.show("Generuje Twojego Bota o imieniu "+name.getValue(),5000, Notification.Position.MIDDLE);
+            namesRepo.save(new PersonsNames(name.getValue()));
 
-            grid.setItems(namesRepo.findAll());
-        //    grid.getDataProvider().refreshAll();
+            // Uruchamia maina z argumentem (nazwa bota)
+            String[] args = new String[]{name.getValue()};
+                try {
+                    Main.main(args);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+                grid.setItems(namesRepo.findAll());
             select.setItems(namesRepo.findAll());
-         //   select.getDataProvider().refreshAll();
+            //TODO link do strony ??
+                sayHello.getUI().ifPresent(ui ->
+                        ui.navigate("step1"));
+
 
         }});
 
@@ -73,7 +84,7 @@ public class HelloWorldView extends HorizontalLayout {
 
             button.addClickListener(e -> {
                 if (select.getValue() != null) {
-                    namesRepo.save(new PersonsNames(select.getValue().getName(), select.getValue().getSurname()));
+                    namesRepo.save(new PersonsNames(select.getValue().getName()));
                     grid.setItems(namesRepo.findAll());
                     select.setItems(namesRepo.findAll());
                 }
@@ -85,6 +96,14 @@ public class HelloWorldView extends HorizontalLayout {
         add(grid);
 
         add(select, button);
+
+        NativeButton buttonNavi = new NativeButton(
+                "Rozpocznij tworzenie bota");
+        buttonNavi.addClickListener(e ->
+                buttonNavi.getUI().ifPresent(ui ->
+                        ui.navigate("step1"))
+        );
+        add(buttonNavi);
 
 
     }
