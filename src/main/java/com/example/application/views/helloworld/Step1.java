@@ -94,6 +94,7 @@ public class Step1 extends HorizontalLayout {
         //TESTER
         //TODO Przykład walidacji do pracy
         saveAngGotoStep2 = new Button("Zapisz i przejdź do kolejnego kroku");
+        saveAngGotoStep2.setAutofocus(true);
         saveAngGotoStep2.addClickListener(e-> {
             if (magicma.getValue() == null) {
                 magicma.setInvalid(true);
@@ -102,15 +103,12 @@ public class Step1 extends HorizontalLayout {
             if(magicma.getValue()!=null && magicma.getValue()>=0) {
                 step1Result = Header.getHeader(magicma.getValue(), author.getValue(), website.getValue(), description.getValue());
                 System.out.println(step1Result);
+                saveAngGotoStep2.getUI().ifPresent(ui ->
+                        ui.navigate("step2"));
             }
         });
 
         add(saveAngGotoStep2);
-
-
-
-
-
 
 
 
