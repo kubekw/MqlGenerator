@@ -78,6 +78,7 @@ public class Rsi {
     }
 
 
+
     // RsiCurrent=iRSI(Symbol,Period,14,PRICE_CLOSE,0);
 
 
