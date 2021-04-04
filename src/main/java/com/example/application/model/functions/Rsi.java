@@ -1,13 +1,16 @@
 package com.example.application.model.functions;
 
+import java.lang.reflect.Field;
+
 public class Rsi {
 
-    private String name = "RSI";
-    private String symbol="Symbol()";
-    private String timeFrame="Period()";
-    private int period=14;
-    private String PRICE_CLOSE = "PRICE_CLOSE";
-    private int shift=0;
+    public String name = "RSI";
+    public String symbol="Symbol()";
+    public String timeFrame="Period()";
+    public int period=14;
+    public String PRICE_CLOSE = "PRICE_CLOSE";
+    public int shift=0;
+
 
     public Rsi() {
     }

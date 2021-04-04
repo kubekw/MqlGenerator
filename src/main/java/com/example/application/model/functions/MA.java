@@ -2,14 +2,14 @@ package com.example.application.model.functions;
 
 public class MA {
 
-    private String varName="ma";
-    private String symbol="NULL";     // symbol
-    private int timeframe=0;        // timeframe
-    private int maPriod=14;        // MA averaging period
-    private int maShift=6;         // MA shift
-    private int maMethod=0;        // averaging method //TODO ENUM_MA_METHOD
-    private int appliedPrice=0;    // applied price //TODO ENUM_APPLIED_PRICE
-    private int shift=0 ;           // shift
+    public String varName="ma";
+    public String symbol="NULL";     // symbol
+    public int timeframe=0;        // timeframe
+    public int maPriod=14;        // MA averaging period
+    public int maShift=6;         // MA shift
+    public int maMethod=0;        // averaging method //TODO ENUM_MA_METHOD
+    public int appliedPrice=0;    // applied price //TODO ENUM_APPLIED_PRICE
+    public int shift=0 ;           // shift
 
     public MA() {
     }
