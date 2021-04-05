@@ -53,14 +53,9 @@ public class Step2 extends HorizontalLayout {
             List<TextField> textFieldList = new ArrayList<>();
 
             for (Field field : getfields) {
-                System.out.println(field.getType().getSimpleName() + " " + field.getName());
+//                System.out.println(field.getType().getSimpleName() + " " + field.getName());
                 try {
                     textFieldList.add(new TextField(field.getName(),field.get(select.getValue()).toString(),""));
-                } catch (IllegalAccessException illegalAccessException) {
-                    illegalAccessException.printStackTrace();
-                }
-                try {
-                    System.out.println(field.get(select.getValue()));
                 } catch (IllegalAccessException illegalAccessException) {
                     illegalAccessException.printStackTrace();
                 }
@@ -115,8 +110,13 @@ public class Step2 extends HorizontalLayout {
         add(funcSelection);
 
 
+        // VAR NAMES EXTRACTOR
+        for (Object o : listOfFunction) {
+            Class class2 = o.getClass();
+            Field[] oGetFields = class2.getDeclaredFields();
+                System.out.println(oGetFields[0].get(o).toString());
 
-
+        }
 
 
 
