@@ -24,6 +24,18 @@ public class Rsi {
         this.shift = shift;
     }
 
+    public Rsi(String name, String symbol, String timeFrame, String period, String PRICE_CLOSE, String shift) {
+        this.name = name;
+        this.symbol = '"'+symbol+'"';
+        this.timeFrame = timeFrame;
+        this.period = Integer.valueOf(period);
+        this.PRICE_CLOSE = PRICE_CLOSE;
+        this.shift = Integer.valueOf(shift);
+        if(symbol.equals("Symbol()")){
+            this.symbol=symbol;
+        }
+    }
+
     public String getName() {
         return name;
     }

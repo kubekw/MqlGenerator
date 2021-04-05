@@ -79,17 +79,32 @@ public class Step2 extends HorizontalLayout {
                         listOfFunction.add(new MA(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
                                 textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue(),
                                 textFieldList.get(6).getValue(), textFieldList.get(7).getValue()));
+                        Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
+                        select.setItems(listOfFunction);
+                        dialog.close();
                     }
                     catch (Exception exception){
-                        Notification.show("ERROR - zły format wprowadzonych danych "+exception.toString(),
+                        Notification.show("ERROR - NIEPRAWIDŁOWE DANE.  "+exception.toString(),
                                 5000, Notification.Position.MIDDLE);
                         return;
                     }
                 }
 
-                select.setItems(listOfFunction);
-                Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
-                dialog.close();
+                if (select.getValue().getClass() == Rsi.class){
+                    try {
+                        listOfFunction.add(new Rsi(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
+                                textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue()));
+                        Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
+                        select.setItems(listOfFunction);
+                        dialog.close();
+                    }
+                    catch (Exception exception){
+                        Notification.show("ERROR - niepoprawne dane."+exception.toString(),
+                                5000, Notification.Position.MIDDLE);
+                        return;
+                    }
+                }
+
             });
             dialog.add(saveButton);
             dialog.open();
