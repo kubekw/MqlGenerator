@@ -2,32 +2,27 @@ package com.example.application.views.helloworld;
 
 import com.example.application.model.functions.MA;
 import com.example.application.model.functions.Rsi;
-import com.example.application.model.sections.Header;
 import com.example.application.views.main.MainView;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Input;
 import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import javax.management.ObjectInstance;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Route(value = "step2", layout = MainView.class)
-@PageTitle("Krok deugi - warunki otwierania zleceń")
+@PageTitle("Krok drugi - warunki otwierania zleceń")
 @CssImport("./views/helloworld/hello-world-view.css")
 public class Step2 extends HorizontalLayout {
+
 
     public Step2() throws IllegalAccessException {
 
@@ -71,7 +66,6 @@ public class Step2 extends HorizontalLayout {
                 }
 
                 //publiczne pola
-
             }
 
             for(TextField t : textFieldList){
@@ -79,10 +73,22 @@ public class Step2 extends HorizontalLayout {
             }
 
             saveButton.addClickListener(event-> {
-                for (TextField t:textFieldList){ //TODO funkcje i toStringi w nowym formacie
-                    System.out.println(t.getValue());
+
+                if (select.getValue().getClass() == MA.class){
+                    try {
+                        listOfFunction.add(new MA(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
+                                textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue(),
+                                textFieldList.get(6).getValue(), textFieldList.get(7).getValue()));
+                    }
+                    catch (Exception exception){
+                        Notification.show("ERROR - zły format wprowadzonych danych "+exception.toString(),
+                                5000, Notification.Position.MIDDLE);
+                        return;
+                    }
                 }
-                Notification.show("Zapisano");
+
+                select.setItems(listOfFunction);
+                Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
                 dialog.close();
             });
             dialog.add(saveButton);

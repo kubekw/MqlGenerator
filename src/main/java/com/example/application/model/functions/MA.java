@@ -24,6 +24,16 @@ public class MA {
         this.appliedPrice = appliedPrice;
         this.shift = shift;
     }
+    public MA(String varName, String symbol, String timeframe, String maPriod, String maShift, String maMethod, String appliedPrice, String shift) {
+        this.varName = varName;
+        this.symbol = symbol;
+        this.timeframe = Integer.valueOf(timeframe);
+        this.maPriod = Integer.valueOf(maPriod);
+        this.maShift = Integer.valueOf(maShift);
+        this.maMethod = Integer.valueOf(maMethod);
+        this.appliedPrice = Integer.valueOf(appliedPrice);
+        this.shift = Integer.valueOf(shift);
+    }
 
     public String getVarName() {
         return varName;
