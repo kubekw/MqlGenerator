@@ -90,7 +90,7 @@ public class Step2 extends HorizontalLayout {
                     }
                 }
 
-                if (select.getValue().getClass() == Rsi.class){
+                else if (select.getValue().getClass() == Rsi.class){
                     try {
                         listOfFunction.add(new Rsi(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
                                 textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue()));
