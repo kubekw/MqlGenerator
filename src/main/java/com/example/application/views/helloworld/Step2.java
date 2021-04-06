@@ -32,7 +32,6 @@ public class Step2 extends HorizontalLayout {
         List<String> listOfVarNames = new ArrayList<>();
 
 
-
         Rsi rsi = new Rsi();
         MA ma = new MA();
         listOfFunction.add(rsi);
@@ -143,9 +142,13 @@ public class Step2 extends HorizontalLayout {
                 "Powrót do początku");
         buttonNavi.addClickListener(e ->
                 buttonNavi.getUI().ifPresent(ui ->
-                        ui.navigate("hello"))
+                        ui.navigate("step1"))
         );
         add(buttonNavi);
+
+
+
+        ///
 
 
     }
