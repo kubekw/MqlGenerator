@@ -2,7 +2,7 @@ package com.example.application.model.functions;
 
 public class MA {
 
-    public String varName="ma";
+    public String varName="MovingAverage";
     public String symbol="NULL";     // symbol
     public int timeframe=0;        // timeframe
     public int maPriod=14;        // MA averaging period

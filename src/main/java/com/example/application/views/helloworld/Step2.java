@@ -28,15 +28,22 @@ public class Step2 extends HorizontalLayout {
 
         addClassName("hello-world-view");
 
+        List<Object> listOfFunction = new ArrayList<>();
+        List<String> listOfVarNames = new ArrayList<>();
+
+
+
         Rsi rsi = new Rsi();
         MA ma = new MA();
-        List<Object> listOfFunction = new ArrayList<>();
         listOfFunction.add(rsi);
         listOfFunction.add(ma);
 
         Select<Object> select = new Select<>();
         select.setLabel("Wybierz funkcje");
         select.setItems(listOfFunction);
+        select.setItemLabelGenerator(o -> {
+            return o.toString().substring(0,o.toString().indexOf("="));
+        });
         add(select);
 
         Button funcSelection = new Button("Wybierz");
@@ -68,6 +75,14 @@ public class Step2 extends HorizontalLayout {
             }
 
             saveButton.addClickListener(event-> {
+                // TODO WALIDACJA LISTY NAZW ZMIENNYCH
+                if(listOfVarNames.contains(textFieldList.get(0).getValue())){
+                   textFieldList.get(0).setInvalid(true);
+                    Notification.show("ERROR - Zmienna o podanej nazwie już istnieje",
+                            5000, Notification.Position.MIDDLE);
+                    return;
+
+                }
 
                 if (select.getValue().getClass() == MA.class){
                     try {
@@ -76,6 +91,7 @@ public class Step2 extends HorizontalLayout {
                                 textFieldList.get(6).getValue(), textFieldList.get(7).getValue()));
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
                         select.setItems(listOfFunction);
+                        listOfVarNames.add(textFieldList.get(0).getValue());
                         dialog.close();
                     }
                     catch (Exception exception){
@@ -91,6 +107,7 @@ public class Step2 extends HorizontalLayout {
                                 textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue()));
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
                         select.setItems(listOfFunction);
+                        listOfVarNames.add(textFieldList.get(0).getValue());
                         dialog.close();
                     }
                     catch (Exception exception){
@@ -100,6 +117,7 @@ public class Step2 extends HorizontalLayout {
                     }
                 }
 
+
             });
             dialog.add(saveButton);
             dialog.open();
@@ -107,18 +125,17 @@ public class Step2 extends HorizontalLayout {
 
         });
 
+
         add(funcSelection);
 
 
-        // VAR NAMES EXTRACTOR
+        // VAR NAMES EXTRACTOR //TODO do wywołania przy przejściu do kolejnego ekranu
         for (Object o : listOfFunction) {
             Class class2 = o.getClass();
             Field[] oGetFields = class2.getDeclaredFields();
                 System.out.println(oGetFields[0].get(o).toString());
-
+                listOfVarNames.add(oGetFields[0].get(o).toString());
         }
-
-
 
 
 
@@ -132,5 +149,6 @@ public class Step2 extends HorizontalLayout {
 
 
     }
+
 
 }
