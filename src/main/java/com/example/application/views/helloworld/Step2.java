@@ -1,13 +1,20 @@
 package com.example.application.views.helloworld;
 
+import com.example.application.model.Input;
 import com.example.application.model.functions.MA;
 import com.example.application.model.functions.Rsi;
 import com.example.application.views.main.MainView;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
@@ -23,19 +30,27 @@ import java.util.List;
 @CssImport("./views/helloworld/hello-world-view.css")
 public class Step2 extends HorizontalLayout {
 
+    List<Object> listOfFunction = new ArrayList<>();
+    List<String> listOfVarNames = new ArrayList<>();
+
+    //TODO
+    List<Input> listOfInputs = new ArrayList<>();
+
+    List<String> listOfSellConditions = new ArrayList<>();
+    List<String> listOfBuyConditions = new ArrayList<>();
+
 
     public Step2() throws IllegalAccessException {
 
         addClassName("hello-world-view");
 
-        List<Object> listOfFunction = new ArrayList<>();
-        List<String> listOfVarNames = new ArrayList<>();
-
-
         Rsi rsi = new Rsi();
         MA ma = new MA();
         listOfFunction.add(rsi);
         listOfFunction.add(ma);
+
+        Input inputVar = new Input("double","NazwaZmiennej","0","Wyświetlana nazwa");
+        listOfInputs.add(inputVar);
 
         Select<Object> select = new Select<>();
         select.setLabel("Wybierz funkcje");
@@ -146,12 +161,64 @@ public class Step2 extends HorizontalLayout {
         );
         add(buttonNavi);
 
+        add(inputs());
 
+        add(buyConditions());
 
-        ///
 
 
     }
+
+    private Component inputs() {
+        HorizontalLayout layout = new HorizontalLayout();
+
+        Select<Input> selectlistOfInputs = new Select<>();
+        Button addInput = new Button("Dodaj dane wejściowe");
+
+        selectlistOfInputs.setItems(listOfInputs);
+        selectlistOfInputs.setLabel("Dane Użytkownika");
+        selectlistOfInputs.setItemLabelGenerator(Input::getDisplayName);
+
+        addInput.addClickListener(addclick -> {
+
+            Dialog dialog = new Dialog();
+            dialog.setCloseOnOutsideClick(true);
+            dialog.setCloseOnEsc(true);
+            Button saveInput = new Button("Zapisz");
+
+
+            TextField inputType = new TextField("Typ danych", "double","");
+            TextField inputName = new TextField("nazwa", "inputVar1","");
+            TextField inputValue = new TextField("wartość domyślna", "0","");
+            TextField inputDisplayName = new TextField("wyświetlana nazwa", "Nazwa zmiennej","");
+
+            saveInput.addClickListener(buttonClickEvent -> {
+                listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue(),inputDisplayName.getValue()));
+                selectlistOfInputs.setItems(listOfInputs);
+                dialog.close();
+            });
+
+            dialog.add(inputType,inputName,inputValue,inputDisplayName,saveInput);
+            dialog.open();
+
+        });
+
+
+        layout.add(selectlistOfInputs,addInput);
+        return layout;
+    }
+
+    private Component buyConditions() {
+        HorizontalLayout layout = new HorizontalLayout();
+
+        Select<String> selectBuyCondition1 = new Select<>();
+        Select<String> selectOperator = new Select<>();
+        Select<String> selectBuyCondition2 = new Select<>();
+
+        layout.add(selectBuyCondition1, selectOperator, selectBuyCondition2);
+        return layout;
+    }
+
 
 
 }
