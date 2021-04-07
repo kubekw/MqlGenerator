@@ -17,6 +17,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -131,12 +132,9 @@ public class Step2 extends HorizontalLayout {
                     }
                 }
 
-
             });
             dialog.add(saveButton);
             dialog.open();
-
-
         });
 
 
@@ -164,9 +162,6 @@ public class Step2 extends HorizontalLayout {
         add(inputs());
 
         add(buyConditions());
-
-
-
     }
 
     private Component inputs() {
@@ -189,11 +184,13 @@ public class Step2 extends HorizontalLayout {
 
             TextField inputType = new TextField("Typ danych", "double","");
             TextField inputName = new TextField("nazwa", "inputVar1","");
-            TextField inputValue = new TextField("wartość domyślna", "0","");
+            NumberField inputValue = new NumberField("wartość domyślna");
+            inputValue.setValue(10.00);
             TextField inputDisplayName = new TextField("wyświetlana nazwa", "Nazwa zmiennej","");
 
             saveInput.addClickListener(buttonClickEvent -> {
-                listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue(),inputDisplayName.getValue()));
+                listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue().toString(),inputDisplayName.getValue()));
+               // System.out.println(listOfInputs.get(listOfInputs.size()-1).toString());
                 selectlistOfInputs.setItems(listOfInputs);
                 dialog.close();
             });
@@ -207,6 +204,9 @@ public class Step2 extends HorizontalLayout {
         layout.add(selectlistOfInputs,addInput);
         return layout;
     }
+
+
+
 
     private Component buyConditions() {
         HorizontalLayout layout = new HorizontalLayout();
