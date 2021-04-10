@@ -28,6 +28,7 @@ public class Step2 extends HorizontalLayout {
     List<Object> listOfFunction = new ArrayList<>();
     Set<String> listOfVarNames = new TreeSet<>();
     Set<String> listOfInputNames = new TreeSet<>();
+    Set<String> namesListToConditions = new TreeSet<>();
 
     //TODO
     List<Input> listOfInputs = new ArrayList<>();
@@ -198,7 +199,7 @@ public class Step2 extends HorizontalLayout {
     private Component buyConditions() {
         HorizontalLayout layout = new HorizontalLayout();
 
-        Set<String> namesListToConditions = new TreeSet<>();
+
         namesListToConditions.addAll(listOfVarNames);
         namesListToConditions.addAll(listOfInputNames);
 
@@ -210,8 +211,7 @@ public class Step2 extends HorizontalLayout {
             } catch (IllegalAccessException illegalAccessException) {
                 illegalAccessException.printStackTrace();
             }
-            namesListToConditions.addAll(listOfVarNames);
-            namesListToConditions.addAll(listOfInputNames);
+
             selectBuyCondition1.setItems(namesListToConditions);
 
         });
@@ -228,8 +228,6 @@ public class Step2 extends HorizontalLayout {
             } catch (IllegalAccessException illegalAccessException) {
                 illegalAccessException.printStackTrace();
             }
-            namesListToConditions.addAll(listOfVarNames);
-            namesListToConditions.addAll(listOfInputNames);
             selectBuyCondition2.setItems(namesListToConditions);
 
         });
@@ -239,6 +237,8 @@ public class Step2 extends HorizontalLayout {
         layout.add(selectBuyCondition1, selectOperator, selectBuyCondition2);
         return layout;
     }
+
+
 
     void refreshListsOfVarNames() throws IllegalAccessException {
         // VAR NAMES EXTRACTOR //TODO do wywołania przy przejściu do kolejnego ekranu albo do nowej metody
@@ -252,6 +252,8 @@ public class Step2 extends HorizontalLayout {
         for (Input input : listOfInputs) {
             listOfInputNames.add(input.getName());
         }
+        namesListToConditions.addAll(listOfVarNames);
+        namesListToConditions.addAll(listOfInputNames);
     }
 
 
