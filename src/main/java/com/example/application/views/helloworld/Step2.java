@@ -152,13 +152,7 @@ public class Step2 extends HorizontalLayout {
             dialog.open();
         });
 
-
         add(funcSelection);
-
-
-
-
-
 
         NativeButton buttonNavi = new NativeButton(
                 "Powrót do początku");
@@ -222,19 +216,44 @@ public class Step2 extends HorizontalLayout {
     private Component buyConditions() throws IllegalAccessException {
         HorizontalLayout layout = new HorizontalLayout();
 
-        Text buyConditionsText = new Text("Dodaj warunki otwarcia długich pozycji");
+        Text buyConditionsText = new Text("Ustal warunki otwarcia długich pozycji");
 
-        refreshListsOfVarNames();
+        refreshListsOfVarNames();//TODO WALIDACJA i opisy
         selectBuyCondition1.setItems(namesListToConditions);
         selectOperator.setItems(listOfOperators);
         selectBuyCondition2.setItems(namesListToConditions);
 
         Button addCondition = new Button("Dodaj Warunek");
-        addCondition.addClickListener(e->{//TODO dodawanie warunków do listy
+        addCondition.addClickListener(e->{
             String contidion = selectBuyCondition1.getValue()+selectOperator.getValue()+selectBuyCondition2.getValue();
             System.out.println(contidion);
-            listOfBuyConditions.add(contidion);//TODO TEST
+            listOfBuyConditions.add(contidion);
             System.out.println(listOfBuyConditions.toString());
+            //TODO dodawanie operatorów do listy
+            Dialog dialog = new Dialog();
+            dialog.setCloseOnOutsideClick(true);
+            dialog.setCloseOnEsc(true);
+            Text text = new Text("Jeżeli chcesz dodać kolejny warunek, wybierz zależność pomiędzy nim a poprzednim");
+            Select<String> warunek = new Select<>("&&", "||",
+                    "Nie chce dodawać więcej warunków");
+            warunek.setLabel("Zależność pomiędzy warunkami");
+            warunek.setHelperText(
+                    "Wybierz '&&' jeżeli oba warunki muszą zostać spełnione, lub '||' jeżeli wystarczy, aby jeden z " +
+                            "warunków został spełniony");
+            Button saveInput = new Button("Dodaj zależność");
+            saveInput.addClickListener(save->{
+                if(warunek.getValue().equals("&&") || warunek.getValue().equals("||")) {
+                    listOfBuyConditions.add(warunek.getValue());
+                    System.out.println(listOfBuyConditions.toString());
+                    dialog.close();
+                }
+                dialog.close();
+            });
+            dialog.add(text,warunek,saveInput);
+
+            dialog.open();
+
+
         });
         add(buyConditionsText);
         layout.add(selectBuyCondition1, selectOperator, selectBuyCondition2, addCondition);
@@ -244,7 +263,7 @@ public class Step2 extends HorizontalLayout {
 
 
     void refreshListsOfVarNames() throws IllegalAccessException {
-        // VAR NAMES EXTRACTOR //TODO do wywołania przy przejściu do kolejnego ekranu albo do nowej metody
+        // VAR NAMES EXTRACTOR
         for (Object o : listOfFunction) {
             Class class2 = o.getClass();
             Field[] oGetFields = class2.getDeclaredFields();
