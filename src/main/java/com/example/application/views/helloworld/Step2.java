@@ -5,6 +5,7 @@ import com.example.application.model.functions.MA;
 import com.example.application.model.functions.Rsi;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -45,9 +46,9 @@ public class Step2 extends HorizontalLayout {
 
     public Step2() throws IllegalAccessException {
 
-        listOfOperators.add(">");
-        listOfOperators.add("=");
-        listOfOperators.add("<");
+        listOfOperators.add(" > ");
+        listOfOperators.add(" = ");
+        listOfOperators.add(" < ");
 
         addClassName("hello-world-view");
 
@@ -221,6 +222,8 @@ public class Step2 extends HorizontalLayout {
     private Component buyConditions() throws IllegalAccessException {
         HorizontalLayout layout = new HorizontalLayout();
 
+        Text buyConditionsText = new Text("Dodaj warunki otwarcia długich pozycji");
+
         refreshListsOfVarNames();
         selectBuyCondition1.setItems(namesListToConditions);
         selectOperator.setItems(listOfOperators);
@@ -228,9 +231,12 @@ public class Step2 extends HorizontalLayout {
 
         Button addCondition = new Button("Dodaj Warunek");
         addCondition.addClickListener(e->{//TODO dodawanie warunków do listy
-            System.out.println(selectBuyCondition1.getValue()+selectOperator.getValue()+selectBuyCondition2.getValue());
+            String contidion = selectBuyCondition1.getValue()+selectOperator.getValue()+selectBuyCondition2.getValue();
+            System.out.println(contidion);
+            listOfBuyConditions.add(contidion);//TODO TEST
+            System.out.println(listOfBuyConditions.toString());
         });
-
+        add(buyConditionsText);
         layout.add(selectBuyCondition1, selectOperator, selectBuyCondition2, addCondition);
         return layout;
     }
