@@ -5,16 +5,11 @@ import com.example.application.model.functions.MA;
 import com.example.application.model.functions.Rsi;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.applayout.DrawerToggle;
-import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -23,8 +18,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Route(value = "step2", layout = MainView.class)
 @PageTitle("Krok drugi - warunki otwierania zleceń")
@@ -32,7 +26,8 @@ import java.util.List;
 public class Step2 extends HorizontalLayout {
 
     List<Object> listOfFunction = new ArrayList<>();
-    List<String> listOfVarNames = new ArrayList<>();
+    Set<String> listOfVarNames = new TreeSet<>();
+    Set<String> listOfInputNames = new TreeSet<>();
 
     //TODO
     List<Input> listOfInputs = new ArrayList<>();
@@ -50,8 +45,6 @@ public class Step2 extends HorizontalLayout {
         listOfFunction.add(rsi);
         listOfFunction.add(ma);
 
-        Input inputVar = new Input("double","NazwaZmiennej","0","Wyświetlana nazwa");
-        listOfInputs.add(inputVar);
 
         Select<Object> select = new Select<>();
         select.setLabel("Wybierz funkcje");
@@ -141,13 +134,7 @@ public class Step2 extends HorizontalLayout {
         add(funcSelection);
 
 
-        // VAR NAMES EXTRACTOR //TODO do wywołania przy przejściu do kolejnego ekranu
-        for (Object o : listOfFunction) {
-            Class class2 = o.getClass();
-            Field[] oGetFields = class2.getDeclaredFields();
-                System.out.println(oGetFields[0].get(o).toString());
-                listOfVarNames.add(oGetFields[0].get(o).toString());
-        }
+
 
 
 
@@ -211,13 +198,62 @@ public class Step2 extends HorizontalLayout {
     private Component buyConditions() {
         HorizontalLayout layout = new HorizontalLayout();
 
+        Set<String> namesListToConditions = new TreeSet<>();
+        namesListToConditions.addAll(listOfVarNames);
+        namesListToConditions.addAll(listOfInputNames);
+
+
         Select<String> selectBuyCondition1 = new Select<>();
+        selectBuyCondition1.addFocusListener(e->{
+            try {
+                refreshListsOfVarNames();
+            } catch (IllegalAccessException illegalAccessException) {
+                illegalAccessException.printStackTrace();
+            }
+            namesListToConditions.addAll(listOfVarNames);
+            namesListToConditions.addAll(listOfInputNames);
+            selectBuyCondition1.setItems(namesListToConditions);
+
+        });
+        selectBuyCondition1.setItems(namesListToConditions);
+
         Select<String> selectOperator = new Select<>();
+
+
+
         Select<String> selectBuyCondition2 = new Select<>();
+        selectBuyCondition2.addFocusListener(e->{
+            try {
+                refreshListsOfVarNames();
+            } catch (IllegalAccessException illegalAccessException) {
+                illegalAccessException.printStackTrace();
+            }
+            namesListToConditions.addAll(listOfVarNames);
+            namesListToConditions.addAll(listOfInputNames);
+            selectBuyCondition2.setItems(namesListToConditions);
+
+        });
+        selectBuyCondition2.setItems(namesListToConditions);
+
 
         layout.add(selectBuyCondition1, selectOperator, selectBuyCondition2);
         return layout;
     }
+
+    void refreshListsOfVarNames() throws IllegalAccessException {
+        // VAR NAMES EXTRACTOR //TODO do wywołania przy przejściu do kolejnego ekranu albo do nowej metody
+        for (Object o : listOfFunction) {
+            Class class2 = o.getClass();
+            Field[] oGetFields = class2.getDeclaredFields();
+            System.out.println(oGetFields[0].get(o).toString());
+            listOfVarNames.add(oGetFields[0].get(o).toString());
+        }
+
+        for (Input input : listOfInputs) {
+            listOfInputNames.add(input.getName());
+        }
+    }
+
 
 
 
