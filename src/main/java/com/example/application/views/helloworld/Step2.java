@@ -29,15 +29,25 @@ public class Step2 extends HorizontalLayout {
     Set<String> listOfVarNames = new TreeSet<>();
     Set<String> listOfInputNames = new TreeSet<>();
     Set<String> namesListToConditions = new TreeSet<>();
+    Select<String> selectBuyCondition1 = new Select<>();
+    Select<String> selectBuyCondition2 = new Select<>();
+    Select<String> selectOperator = new Select<>();
 
     //TODO
     List<Input> listOfInputs = new ArrayList<>();
+
+    List<String> listOfOperators = new ArrayList<>();
+
 
     List<String> listOfSellConditions = new ArrayList<>();
     List<String> listOfBuyConditions = new ArrayList<>();
 
 
     public Step2() throws IllegalAccessException {
+
+        listOfOperators.add(">");
+        listOfOperators.add("=");
+        listOfOperators.add("<");
 
         addClassName("hello-world-view");
 
@@ -101,6 +111,11 @@ public class Step2 extends HorizontalLayout {
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
                         select.setItems(listOfFunction);
                         listOfVarNames.add(textFieldList.get(0).getValue());
+                        try {
+                            refreshListsOfVarNames();
+                        } catch (IllegalAccessException illegalAccessException) {
+                            illegalAccessException.printStackTrace();
+                        }
                         dialog.close();
                     }
                     catch (Exception exception){
@@ -117,6 +132,11 @@ public class Step2 extends HorizontalLayout {
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
                         select.setItems(listOfFunction);
                         listOfVarNames.add(textFieldList.get(0).getValue());
+                        try {
+                            refreshListsOfVarNames();
+                        } catch (IllegalAccessException illegalAccessException) {
+                            illegalAccessException.printStackTrace();
+                        }
                         dialog.close();
                     }
                     catch (Exception exception){
@@ -180,6 +200,11 @@ public class Step2 extends HorizontalLayout {
                 listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue().toString(),inputDisplayName.getValue()));
                // System.out.println(listOfInputs.get(listOfInputs.size()-1).toString());
                 selectlistOfInputs.setItems(listOfInputs);
+                try {
+                    refreshListsOfVarNames();
+                } catch (IllegalAccessException illegalAccessException) {
+                    illegalAccessException.printStackTrace();
+                }
                 dialog.close();
             });
 
@@ -188,53 +213,25 @@ public class Step2 extends HorizontalLayout {
 
         });
 
-
         layout.add(selectlistOfInputs,addInput);
         return layout;
     }
 
 
-
-
-    private Component buyConditions() {
+    private Component buyConditions() throws IllegalAccessException {
         HorizontalLayout layout = new HorizontalLayout();
 
-
-        namesListToConditions.addAll(listOfVarNames);
-        namesListToConditions.addAll(listOfInputNames);
-
-
-        Select<String> selectBuyCondition1 = new Select<>();
-        selectBuyCondition1.addFocusListener(e->{
-            try {
-                refreshListsOfVarNames();
-            } catch (IllegalAccessException illegalAccessException) {
-                illegalAccessException.printStackTrace();
-            }
-
-            selectBuyCondition1.setItems(namesListToConditions);
-
-        });
+        refreshListsOfVarNames();
         selectBuyCondition1.setItems(namesListToConditions);
-
-        Select<String> selectOperator = new Select<>();
-
-
-
-        Select<String> selectBuyCondition2 = new Select<>();
-        selectBuyCondition2.addFocusListener(e->{
-            try {
-                refreshListsOfVarNames();
-            } catch (IllegalAccessException illegalAccessException) {
-                illegalAccessException.printStackTrace();
-            }
-            selectBuyCondition2.setItems(namesListToConditions);
-
-        });
+        selectOperator.setItems(listOfOperators);
         selectBuyCondition2.setItems(namesListToConditions);
 
+        Button addCondition = new Button("Dodaj Warunek");
+        addCondition.addClickListener(e->{//TODO dodawanie warunków do listy
+            System.out.println(selectBuyCondition1.getValue()+selectOperator.getValue()+selectBuyCondition2.getValue());
+        });
 
-        layout.add(selectBuyCondition1, selectOperator, selectBuyCondition2);
+        layout.add(selectBuyCondition1, selectOperator, selectBuyCondition2, addCondition);
         return layout;
     }
 
@@ -254,6 +251,9 @@ public class Step2 extends HorizontalLayout {
         }
         namesListToConditions.addAll(listOfVarNames);
         namesListToConditions.addAll(listOfInputNames);
+        selectBuyCondition1.setItems(namesListToConditions);
+        selectBuyCondition2.setItems(namesListToConditions);
+
     }
 
 
