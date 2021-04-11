@@ -35,6 +35,9 @@ public class Step2 extends HorizontalLayout {
     Select<String> selectBuyCondition1 = new Select<>();
     Select<String> selectBuyCondition2 = new Select<>();
     Select<String> selectOperator = new Select<>();
+    Select<String> selectSellCondition1 = new Select<>();
+    Select<String> selectSellCondition2 = new Select<>();
+    Select<String> selectSellOperator = new Select<>();
 
     //TODO
     List<Input> listOfInputs = new ArrayList<>();
@@ -45,6 +48,7 @@ public class Step2 extends HorizontalLayout {
     List<String> listOfSellConditions = new ArrayList<>();
     List<String> listOfBuyConditions = new ArrayList<>();
     Text listOfBuyConditionsTxt = new Text(listOfBuyConditions.toString());
+    Text listOfSellConditionsTxt = new Text(listOfSellConditions.toString());
 
 
     public Step2() throws IllegalAccessException {
@@ -170,6 +174,10 @@ public class Step2 extends HorizontalLayout {
         add(buyConditions());
 
         add(buyConditionsList());
+
+        add(sellConditions());
+
+        add(sellConditionsList());
     }
 
     private Component inputs() {
@@ -287,6 +295,86 @@ public class Step2 extends HorizontalLayout {
         return layout;
     }
 
+    private Component sellConditions() throws IllegalAccessException {
+        HorizontalLayout layout = new HorizontalLayout();
+
+        Text sellConditionsText = new Text("Ustal warunki otwarcia któtkich pozycji");
+
+        refreshListsOfVarNames();//TODO WALIDACJA i opisy
+        selectSellCondition1.setItems(namesListToConditions);
+        selectSellOperator.setItems(listOfOperators);
+        selectSellCondition2.setItems(namesListToConditions);
+
+
+        Button addSellCondition = new Button("Dodaj Warunek");
+        addSellCondition.addClickListener(e->{
+            if(selectSellCondition1.getValue()==null || selectSellOperator.getValue()==null
+                    || selectSellCondition2.getValue()==null){
+                Notification.show("ERROR - Wszystkie wymagane pola nie zostały wybrane",3000,
+                        Notification.Position.MIDDLE);
+                selectSellCondition1.setInvalid(true);
+                selectSellCondition2.setInvalid(true);
+                selectSellOperator.setInvalid(true);
+
+                return;
+            }
+            String contidion = selectSellCondition1.getValue()+selectSellOperator.getValue()+selectSellCondition2.getValue();
+            System.out.println(contidion);
+            listOfSellConditions.add(contidion);
+            System.out.println("sell: "+listOfSellConditions.toString());
+            listOfSellConditionsTxt.setText(listOfSellConditions.toString());
+
+
+            Dialog dialog = new Dialog();
+            dialog.setCloseOnOutsideClick(true);
+            dialog.setCloseOnEsc(true);
+            Text text = new Text("Jeżeli chcesz dodać kolejny warunek, wybierz zależność pomiędzy nim a poprzednim");
+            Select<String> warunek = new Select<>("&&", "||",
+                    "Nie chce dodawać więcej warunków");
+            warunek.setLabel("Zależność pomiędzy warunkami");
+            warunek.setHelperText(
+                    "Wybierz '&&' jeżeli oba warunki muszą zostać spełnione, lub '||' jeżeli wystarczy, aby jeden z " +
+                            "warunków został spełniony");
+            Button saveInput = new Button("Dodaj zależność");
+            saveInput.addClickListener(save->{
+                if(warunek.getValue()!=null)
+                {
+                    if(warunek.getValue().equals("&&") || warunek.getValue().equals("||")) {
+                        listOfSellConditions.add(warunek.getValue());
+                        System.out.println(listOfSellConditions.toString());
+                        listOfSellConditionsTxt.setText(listOfSellConditions.toString());
+
+                        dialog.close();
+                    }
+                }
+                dialog.close();
+            });
+            dialog.add(text,warunek,saveInput);
+
+            dialog.open();
+
+
+        });
+        add(sellConditionsText);
+        layout.add(selectSellCondition1, selectSellOperator, selectSellCondition2, addSellCondition);
+
+        return layout;
+    }
+
+    private Component sellConditionsList() {
+        VerticalLayout layout = new VerticalLayout();
+
+        Text sellConditionsListText = new Text("Lista dodanych warunków:");
+        Button removeAllSellConditions = new Button("Wyczyść");
+        removeAllSellConditions.addClickListener(buttonClickEvent -> {
+            listOfSellConditions.removeAll(listOfSellConditions);
+            listOfSellConditionsTxt.setText(listOfSellConditions.toString());
+        });
+
+        layout.add(sellConditionsListText,listOfSellConditionsTxt, removeAllSellConditions);
+        return layout;
+    }
+
 
 
     void refreshListsOfVarNames() throws IllegalAccessException {
@@ -305,6 +393,8 @@ public class Step2 extends HorizontalLayout {
         namesListToConditions.addAll(listOfInputNames);
         selectBuyCondition1.setItems(namesListToConditions);
         selectBuyCondition2.setItems(namesListToConditions);
+        selectSellCondition1.setItems(namesListToConditions);
+        selectSellCondition2.setItems(namesListToConditions);
 
     }
 
