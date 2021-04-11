@@ -1,10 +1,11 @@
 package com.example.application.model.sections;
 
 import java.util.List;
+import java.util.Set;
 
 public class voidCheckForOpen {
 
-    public static String CheckForOpen(List<Object> functions, List<String> Variables,
+    public static String CheckForOpen(List<Object> functions, Set<String> Variables,
                                       List<String> sellConditionslist, List<String> buyConditionalList){
 
 
@@ -15,7 +16,7 @@ public class voidCheckForOpen {
             tradeFunctions = tradeFunctions + o.toString()+'\n';
         }
 
-        String varibleInitial="";
+        String varibleInitial="\n";
         for(String s: Variables){
             varibleInitial = varibleInitial +"double "+s+";"+'\n';
         }

@@ -3,6 +3,8 @@ package com.example.application.views.helloworld;
 import com.example.application.model.Input;
 import com.example.application.model.functions.MA;
 import com.example.application.model.functions.Rsi;
+import com.example.application.model.sections.CalcOpenPos;
+import com.example.application.model.sections.voidCheckForOpen;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -75,6 +77,10 @@ public class Step2 extends HorizontalLayout {
 
         Button funcSelection = new Button("Wybierz");
         funcSelection.addClickListener(e->{
+            if(select.getValue()==null){
+                select.setInvalid(true);
+                return;
+            }
 
             Dialog dialog = new Dialog();
             dialog.setCloseOnOutsideClick(true);
@@ -178,6 +184,8 @@ public class Step2 extends HorizontalLayout {
         add(sellConditions());
 
         add(sellConditionsList());
+
+        add(generateVoidCheckForOpen());
     }
 
     private Component inputs() {
@@ -249,9 +257,9 @@ public class Step2 extends HorizontalLayout {
                 return;
             }
             String contidion = selectBuyCondition1.getValue()+selectOperator.getValue()+selectBuyCondition2.getValue();
-            System.out.println(contidion);
+           // System.out.println(contidion);
             listOfBuyConditions.add(contidion);
-            System.out.println(listOfBuyConditions.toString());
+           // System.out.println(listOfBuyConditions.toString());
             listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
 
 
@@ -271,7 +279,7 @@ public class Step2 extends HorizontalLayout {
                 {
                     if(warunek.getValue().equals("&&") || warunek.getValue().equals("||")) {
                         listOfBuyConditions.add(warunek.getValue());
-                        System.out.println(listOfBuyConditions.toString());
+                     //   System.out.println(listOfBuyConditions.toString());
                         listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
 
                         dialog.close();
@@ -329,9 +337,9 @@ public class Step2 extends HorizontalLayout {
                 return;
             }
             String contidion = selectSellCondition1.getValue()+selectSellOperator.getValue()+selectSellCondition2.getValue();
-            System.out.println(contidion);
+          //  System.out.println(contidion);
             listOfSellConditions.add(contidion);
-            System.out.println("sell: "+listOfSellConditions.toString());
+           // System.out.println("sell: "+listOfSellConditions.toString());
             listOfSellConditionsTxt.setText(listOfSellConditions.toString());
 
 
@@ -351,7 +359,7 @@ public class Step2 extends HorizontalLayout {
                 {
                     if(warunek.getValue().equals("&&") || warunek.getValue().equals("||")) {
                         listOfSellConditions.add(warunek.getValue());
-                        System.out.println(listOfSellConditions.toString());
+                       // System.out.println(listOfSellConditions.toString());
                         listOfSellConditionsTxt.setText(listOfSellConditions.toString());
 
                         dialog.close();
@@ -392,7 +400,7 @@ public class Step2 extends HorizontalLayout {
         for (Object o : listOfFunction) {
             Class class2 = o.getClass();
             Field[] oGetFields = class2.getDeclaredFields();
-            System.out.println(oGetFields[0].get(o).toString());
+           // System.out.println(oGetFields[0].get(o).toString());
             listOfVarNames.add(oGetFields[0].get(o).toString());
         }
 
@@ -405,6 +413,26 @@ public class Step2 extends HorizontalLayout {
         selectBuyCondition2.setItems(namesListToConditions);
         selectSellCondition1.setItems(namesListToConditions);
         selectSellCondition2.setItems(namesListToConditions);
+
+    }
+
+    private Component generateVoidCheckForOpen(){
+        VerticalLayout layout = new VerticalLayout();
+        Button generateCheckForOpen = new Button("Generuj");
+        generateCheckForOpen.addClickListener(buttonClickEvent -> {
+
+            String inputs = "";
+            for(Input i : listOfInputs){
+                inputs=inputs+i.toString();
+            }
+
+           String step2Result =inputs + CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(listOfFunction,listOfVarNames,listOfSellConditions,listOfBuyConditions);
+            System.out.println(step2Result);
+        });
+
+
+        layout.add(generateCheckForOpen);
+        return layout;
 
     }
 

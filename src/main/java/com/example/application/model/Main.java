@@ -108,14 +108,14 @@ public class Main {
             inputs=inputs+str;
         }
 
-        bufferedWriter.write(Header.getHeader(1234,"Jakub","www.mojaStrona.pl","Bocik z Javy")+
-                inputs+
-                CalcOpenPos.calculateCurrentOrders()+
-                voidCheckForOpen.CheckForOpen(listOfFunctions, listOfVarNames, listOfSellConditions, listOfBuyConditions)+
-                voidCheckForClose.checkForClose(longCloseContitionsList,shortCloseContitionsList,listOfVarNames)+
-                voidOnTick.voidOnTick());
-
-        bufferedWriter.close();
+//        bufferedWriter.write(Header.getHeader(1234,"Jakub","www.mojaStrona.pl","Bocik z Javy")+
+//                inputs+
+//                CalcOpenPos.calculateCurrentOrders()+
+//                voidCheckForOpen.CheckForOpen(listOfFunctions, listOfVarNames, listOfSellConditions, listOfBuyConditions)+
+//                voidCheckForClose.checkForClose(longCloseContitionsList,shortCloseContitionsList,listOfVarNames)+
+//                voidOnTick.voidOnTick());
+//
+//        bufferedWriter.close();
 
 
     }
