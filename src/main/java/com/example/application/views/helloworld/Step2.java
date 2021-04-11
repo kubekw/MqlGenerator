@@ -58,6 +58,8 @@ public class Step2 extends HorizontalLayout {
         listOfOperators.add(" > ");
         listOfOperators.add(" = ");
         listOfOperators.add(" < ");
+        namesListToConditions.add("Ask");
+        namesListToConditions.add("Bid");
 
         addClassName("hello-world-view");
 
@@ -277,7 +279,7 @@ public class Step2 extends HorizontalLayout {
             saveInput.addClickListener(save->{
                 if(warunek.getValue()!=null)
                 {
-                    if(warunek.getValue().equals("&&") || warunek.getValue().equals("||")) {
+                    if(warunek.getValue().equals(" && ") || warunek.getValue().equals(" || ")) {
                         listOfBuyConditions.add(warunek.getValue());
                      //   System.out.println(listOfBuyConditions.toString());
                         listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
@@ -346,7 +348,7 @@ public class Step2 extends HorizontalLayout {
             dialog.setCloseOnOutsideClick(true);
             dialog.setCloseOnEsc(true);
             Text text = new Text("Jeżeli chcesz dodać kolejny warunek, wybierz zależność pomiędzy nim a poprzednim");
-            Select<String> warunek = new Select<>("&&", "||",
+            Select<String> warunek = new Select<>(" && ", " || ",
                     "Nie chce dodawać więcej warunków");
             warunek.setLabel("Zależność pomiędzy warunkami");
             warunek.setHelperText(
@@ -356,7 +358,7 @@ public class Step2 extends HorizontalLayout {
             saveInput.addClickListener(save->{
                 if(warunek.getValue()!=null)
                 {
-                    if(warunek.getValue().equals("&&") || warunek.getValue().equals("||")) {
+                    if(warunek.getValue().equals(" && ") || warunek.getValue().equals(" || ")) {
                         listOfSellConditions.add(warunek.getValue());
                        // System.out.println(listOfSellConditions.toString());
                         listOfSellConditionsTxt.setText(listOfSellConditions.toString());
@@ -423,6 +425,7 @@ public class Step2 extends HorizontalLayout {
             for(Input i : listOfInputs){
                 inputs=inputs+i.toString();
             }
+//TODO LISTA UZYTYCH FUNKCJI ZAMIAST WSZYSTKICH
 
            String step2Result =inputs + CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(listOfFunction,listOfVarNames,listOfSellConditions,listOfBuyConditions);
             System.out.println(step2Result);
