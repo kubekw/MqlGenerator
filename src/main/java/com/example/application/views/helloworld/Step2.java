@@ -9,9 +9,11 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -42,6 +44,7 @@ public class Step2 extends HorizontalLayout {
 
     List<String> listOfSellConditions = new ArrayList<>();
     List<String> listOfBuyConditions = new ArrayList<>();
+    Text listOfBuyConditionsTxt = new Text(listOfBuyConditions.toString());
 
 
     public Step2() throws IllegalAccessException {
@@ -165,6 +168,8 @@ public class Step2 extends HorizontalLayout {
         add(inputs());
 
         add(buyConditions());
+
+        add(buyConditionsList());
     }
 
     private Component inputs() {
@@ -229,7 +234,9 @@ public class Step2 extends HorizontalLayout {
             System.out.println(contidion);
             listOfBuyConditions.add(contidion);
             System.out.println(listOfBuyConditions.toString());
-            //TODO dodawanie operatorów do listy
+            listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
+
+
             Dialog dialog = new Dialog();
             dialog.setCloseOnOutsideClick(true);
             dialog.setCloseOnEsc(true);
@@ -242,10 +249,15 @@ public class Step2 extends HorizontalLayout {
                             "warunków został spełniony");
             Button saveInput = new Button("Dodaj zależność");
             saveInput.addClickListener(save->{
-                if(warunek.getValue().equals("&&") || warunek.getValue().equals("||")) {
-                    listOfBuyConditions.add(warunek.getValue());
-                    System.out.println(listOfBuyConditions.toString());
-                    dialog.close();
+                if(warunek.getValue()!=null)
+                {
+                    if(warunek.getValue().equals("&&") || warunek.getValue().equals("||")) {
+                        listOfBuyConditions.add(warunek.getValue());
+                        System.out.println(listOfBuyConditions.toString());
+                        listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
+
+                        dialog.close();
+                    }
                 }
                 dialog.close();
             });
@@ -257,6 +269,21 @@ public class Step2 extends HorizontalLayout {
         });
         add(buyConditionsText);
         layout.add(selectBuyCondition1, selectOperator, selectBuyCondition2, addCondition);
+
+        return layout;
+    }
+
+    private Component buyConditionsList() {
+        VerticalLayout layout = new VerticalLayout();
+
+        Text buyConditionsListText = new Text("Lista dodanych warunków:");
+        Button removeAllBuyConditions = new Button("Wyczyść");
+        removeAllBuyConditions.addClickListener(buttonClickEvent -> {
+           listOfBuyConditions.removeAll(listOfBuyConditions);
+           listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
+        });
+
+        layout.add(buyConditionsListText,listOfBuyConditionsTxt, removeAllBuyConditions);
         return layout;
     }
 
