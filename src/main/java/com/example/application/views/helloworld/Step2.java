@@ -238,6 +238,16 @@ public class Step2 extends HorizontalLayout {
 
         Button addCondition = new Button("Dodaj Warunek");
         addCondition.addClickListener(e->{
+            if(selectBuyCondition1.getValue()==null || selectOperator.getValue()==null
+                    || selectBuyCondition2.getValue()==null){
+                Notification.show("ERROR - Wszystkie wymagane pola nie zostały wybrane",3000,
+                        Notification.Position.MIDDLE);
+                selectBuyCondition1.setInvalid(true);
+                selectBuyCondition2.setInvalid(true);
+                selectOperator.setInvalid(true);
+
+                return;
+            }
             String contidion = selectBuyCondition1.getValue()+selectOperator.getValue()+selectBuyCondition2.getValue();
             System.out.println(contidion);
             listOfBuyConditions.add(contidion);
