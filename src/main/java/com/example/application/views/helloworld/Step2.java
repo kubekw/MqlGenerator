@@ -267,7 +267,7 @@ public class Step2 extends HorizontalLayout {
             dialog.setCloseOnOutsideClick(true);
             dialog.setCloseOnEsc(true);
             Text text = new Text("Jeżeli chcesz dodać kolejny warunek, wybierz zależność pomiędzy nim a poprzednim");
-            Select<String> warunek = new Select<>("&&", "||",
+            Select<String> warunek = new Select<>(" && ", " || ",
                     "Nie chce dodawać więcej warunków");
             warunek.setLabel("Zależność pomiędzy warunkami");
             warunek.setHelperText(
@@ -342,7 +342,6 @@ public class Step2 extends HorizontalLayout {
            // System.out.println("sell: "+listOfSellConditions.toString());
             listOfSellConditionsTxt.setText(listOfSellConditions.toString());
 
-
             Dialog dialog = new Dialog();
             dialog.setCloseOnOutsideClick(true);
             dialog.setCloseOnEsc(true);
@@ -370,7 +369,6 @@ public class Step2 extends HorizontalLayout {
             dialog.add(text,warunek,saveInput);
 
             dialog.open();
-
 
         });
         add(sellConditionsText);
@@ -435,7 +433,6 @@ public class Step2 extends HorizontalLayout {
         return layout;
 
     }
-
 
 
 

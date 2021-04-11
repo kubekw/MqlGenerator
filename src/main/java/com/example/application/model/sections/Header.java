@@ -11,6 +11,7 @@ public class Header {
                 "#property copyright   "+'"'+author+'"'+"\n" +
                 "#property link        "+'"'+link+'"'+"\n" +
                 "#property description "+'"'+description+'"'+"\n" +
+                "#property strict \n"+
                 "\n" +
                 "#define MAGICMA  "+MAGICMA+"\n"+
                 "\n";
