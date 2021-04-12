@@ -5,15 +5,15 @@ import java.util.Set;
 
 public class voidCheckForOpen {
 
-    public static String CheckForOpen(List<Object> functions, Set<String> Variables,
+    public static String CheckForOpen(Set<String> functions, Set<String> Variables,
                                       List<String> sellConditionslist, List<String> buyConditionalList){
 
 
         String tradeFunctions ="";
 
-        for (Object o :
+        for (String func :
                 functions) {
-            tradeFunctions = tradeFunctions + o.toString()+'\n';
+            tradeFunctions = tradeFunctions + func+'\n';
         }
 
         String varibleInitial="\n";

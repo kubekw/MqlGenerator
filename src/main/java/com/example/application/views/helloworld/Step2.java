@@ -52,6 +52,9 @@ public class Step2 extends HorizontalLayout {
     Text listOfBuyConditionsTxt = new Text(listOfBuyConditions.toString());
     Text listOfSellConditionsTxt = new Text(listOfSellConditions.toString());
 
+    Set<String> usedFunctionsNames = new TreeSet<>();
+    Set<String> usedFunctions = new TreeSet<>();
+
 
     public Step2() throws IllegalAccessException {
 
@@ -259,10 +262,17 @@ public class Step2 extends HorizontalLayout {
                 return;
             }
             String contidion = selectBuyCondition1.getValue()+selectOperator.getValue()+selectBuyCondition2.getValue();
+            usedFunctionsNames.add(selectBuyCondition1.getValue());
+            usedFunctionsNames.add(selectBuyCondition2.getValue());
            // System.out.println(contidion);
             listOfBuyConditions.add(contidion);
            // System.out.println(listOfBuyConditions.toString());
             listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
+            try {
+                addUsedFunctionsToList();
+            } catch (IllegalAccessException illegalAccessException) {
+                illegalAccessException.printStackTrace();
+            }
 
 
             Dialog dialog = new Dialog();
@@ -339,10 +349,17 @@ public class Step2 extends HorizontalLayout {
                 return;
             }
             String contidion = selectSellCondition1.getValue()+selectSellOperator.getValue()+selectSellCondition2.getValue();
+            usedFunctionsNames.add(selectSellCondition1.getValue());
+            usedFunctionsNames.add(selectSellCondition2.getValue());
           //  System.out.println(contidion);
             listOfSellConditions.add(contidion);
            // System.out.println("sell: "+listOfSellConditions.toString());
             listOfSellConditionsTxt.setText(listOfSellConditions.toString());
+            try {
+                addUsedFunctionsToList();
+            } catch (IllegalAccessException illegalAccessException) {
+                illegalAccessException.printStackTrace();
+            }
 
             Dialog dialog = new Dialog();
             dialog.setCloseOnOutsideClick(true);
@@ -379,6 +396,20 @@ public class Step2 extends HorizontalLayout {
         return layout;
     }
 
+    void addUsedFunctionsToList() throws IllegalAccessException {
+
+        for (Object o : listOfFunction) {
+            Class class2 = o.getClass();
+            Field[] oGetFields = class2.getDeclaredFields();
+            // System.out.println(oGetFields[0].get(o).toString());
+            String name = oGetFields[0].get(o).toString();
+            if(usedFunctionsNames.contains(name)){
+                usedFunctions.add(o.toString());
+            }
+        }
+
+    }
+
     private Component sellConditionsList() {
         VerticalLayout layout = new VerticalLayout();
 
@@ -401,7 +432,8 @@ public class Step2 extends HorizontalLayout {
             Class class2 = o.getClass();
             Field[] oGetFields = class2.getDeclaredFields();
            // System.out.println(oGetFields[0].get(o).toString());
-            listOfVarNames.add(oGetFields[0].get(o).toString());
+            String name = oGetFields[0].get(o).toString();
+            listOfVarNames.add(name);
         }
 
         for (Input input : listOfInputs) {
@@ -425,9 +457,15 @@ public class Step2 extends HorizontalLayout {
             for(Input i : listOfInputs){
                 inputs=inputs+i.toString();
             }
-//TODO LISTA UZYTYCH FUNKCJI ZAMIAST WSZYSTKICH
 
-           String step2Result =inputs + CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(listOfFunction,listOfVarNames,listOfSellConditions,listOfBuyConditions);
+            Set<String> variblesToInitial = new TreeSet<>();
+            for(String str : usedFunctionsNames){
+                if(listOfVarNames.contains(str)){
+                    variblesToInitial.add(str);
+                }
+            }
+
+           String step2Result =inputs + CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(usedFunctions,variblesToInitial,listOfSellConditions,listOfBuyConditions);
             System.out.println(step2Result);
         });
 
