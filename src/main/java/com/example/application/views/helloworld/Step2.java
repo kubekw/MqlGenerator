@@ -9,11 +9,14 @@ import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -34,6 +37,7 @@ public class Step2 extends HorizontalLayout {
     Set<String> listOfVarNames = new TreeSet<>();
     Set<String> listOfInputNames = new TreeSet<>();
     Set<String> namesListToConditions = new TreeSet<>();
+
     Select<String> selectBuyCondition1 = new Select<>();
     Select<String> selectBuyCondition2 = new Select<>();
     Select<String> selectOperator = new Select<>();
@@ -41,9 +45,7 @@ public class Step2 extends HorizontalLayout {
     Select<String> selectSellCondition2 = new Select<>();
     Select<String> selectSellOperator = new Select<>();
 
-    //TODO
     List<Input> listOfInputs = new ArrayList<>();
-
     List<String> listOfOperators = new ArrayList<>();
 
 
@@ -72,15 +74,34 @@ public class Step2 extends HorizontalLayout {
         listOfFunction.add(ma);
 
 
+        add(funcEditor());
+        add(inputs());
+        add(buyConditions());
+        add(buyConditionsList());
+        add(sellConditions());
+        add(sellConditionsList());
+        add(generateVoidCheckForOpen());
+
+        NativeButton buttonNavi = new NativeButton(
+                "Powrót do początku");
+        buttonNavi.addClickListener(e ->
+                buttonNavi.getUI().ifPresent(ui ->
+                        ui.navigate("step1"))
+        );
+        add(buttonNavi);
+    }
+
+    private Component funcEditor(){
+        HorizontalLayout layout = new HorizontalLayout();
+
         Select<Object> select = new Select<>();
-        select.setLabel("Wybierz funkcje");
+        select.setLabel("Dostępne typy funkcji");
         select.setItems(listOfFunction);
         select.setItemLabelGenerator(o -> {
             return o.toString().substring(0,o.toString().indexOf("="));
         });
-        add(select);
 
-        Button funcSelection = new Button("Wybierz");
+        Button funcSelection = new Button("Dodaj Funkcje");
         funcSelection.addClickListener(e->{
             if(select.getValue()==null){
                 select.setInvalid(true);
@@ -115,7 +136,7 @@ public class Step2 extends HorizontalLayout {
             saveButton.addClickListener(event-> {
                 // TODO WALIDACJA LISTY NAZW ZMIENNYCH
                 if(listOfVarNames.contains(textFieldList.get(0).getValue())){
-                   textFieldList.get(0).setInvalid(true);
+                    textFieldList.get(0).setInvalid(true);
                     Notification.show("ERROR - Zmienna o podanej nazwie już istnieje",
                             5000, Notification.Position.MIDDLE);
                     return;
@@ -170,37 +191,21 @@ public class Step2 extends HorizontalLayout {
             dialog.open();
         });
 
-        add(funcSelection);
 
-        NativeButton buttonNavi = new NativeButton(
-                "Powrót do początku");
-        buttonNavi.addClickListener(e ->
-                buttonNavi.getUI().ifPresent(ui ->
-                        ui.navigate("step1"))
-        );
-        add(buttonNavi);
+        layout.add(select, funcSelection);
+        layout.setVerticalComponentAlignment(FlexComponent.Alignment.END,select,funcSelection);
 
-        add(inputs());
-
-        add(buyConditions());
-
-        add(buyConditionsList());
-
-        add(sellConditions());
-
-        add(sellConditionsList());
-
-        add(generateVoidCheckForOpen());
+        return layout;
     }
 
     private Component inputs() {
         HorizontalLayout layout = new HorizontalLayout();
 
         Select<Input> selectlistOfInputs = new Select<>();
-        Button addInput = new Button("Dodaj dane wejściowe");
+        Button addInput = new Button("Dodaj wartości użytkownika");
 
         selectlistOfInputs.setItems(listOfInputs);
-        selectlistOfInputs.setLabel("Dane Użytkownika");
+        selectlistOfInputs.setLabel("Wartości użytkownika");
         selectlistOfInputs.setItemLabelGenerator(Input::getDisplayName);
 
         addInput.addClickListener(addclick -> {
@@ -235,6 +240,7 @@ public class Step2 extends HorizontalLayout {
         });
 
         layout.add(selectlistOfInputs,addInput);
+        layout.setVerticalComponentAlignment(FlexComponent.Alignment.END,selectlistOfInputs,addInput);
         return layout;
     }
 
@@ -451,6 +457,7 @@ public class Step2 extends HorizontalLayout {
     private Component generateVoidCheckForOpen(){
         VerticalLayout layout = new VerticalLayout();
         Button generateCheckForOpen = new Button("Generuj");
+        generateCheckForOpen.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         generateCheckForOpen.addClickListener(buttonClickEvent -> {
 
             String inputs = "";
