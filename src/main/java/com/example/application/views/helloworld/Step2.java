@@ -59,14 +59,13 @@ public class Step2 extends HorizontalLayout {
 
 
     public Step2() throws IllegalAccessException {
+        addClassName("hello-world-view");
 
         listOfOperators.add(" > ");
         listOfOperators.add(" = ");
         listOfOperators.add(" < ");
         namesListToConditions.add("Ask");
         namesListToConditions.add("Bid");
-
-        addClassName("hello-world-view");
 
         Rsi rsi = new Rsi();
         MA ma = new MA();
@@ -202,7 +201,7 @@ public class Step2 extends HorizontalLayout {
         HorizontalLayout layout = new HorizontalLayout();
 
         Select<Input> selectlistOfInputs = new Select<>();
-        Button addInput = new Button("Dodaj wartości użytkownika");
+        Button addInput = new Button("Dodaj wartość użytkownika");
 
         selectlistOfInputs.setItems(listOfInputs);
         selectlistOfInputs.setLabel("Wartości użytkownika");
@@ -470,6 +469,14 @@ public class Step2 extends HorizontalLayout {
                 if(listOfVarNames.contains(str)){
                     variblesToInitial.add(str);
                 }
+            }
+
+            if(listOfSellConditions.isEmpty()){
+                listOfSellConditions.add("false");
+            }
+
+            if(listOfBuyConditions.isEmpty()){
+                listOfBuyConditions.add("false");
             }
 
            String step2Result =inputs + CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(usedFunctions,variblesToInitial,listOfSellConditions,listOfBuyConditions);
