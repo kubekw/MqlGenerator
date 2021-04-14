@@ -133,8 +133,8 @@ public class Step2 extends HorizontalLayout {
             }
 
             saveButton.addClickListener(event-> {
-                // TODO WALIDACJA LISTY NAZW ZMIENNYCH
-                if(listOfVarNames.contains(textFieldList.get(0).getValue())){
+
+                if(namesListToConditions.contains(textFieldList.get(0).getValue())){
                     textFieldList.get(0).setInvalid(true);
                     Notification.show("ERROR - Zmienna o podanej nazwie już istnieje",
                             5000, Notification.Position.MIDDLE);
@@ -222,6 +222,15 @@ public class Step2 extends HorizontalLayout {
             TextField inputDisplayName = new TextField("wyświetlana nazwa", "Nazwa zmiennej","");
 
             saveInput.addClickListener(buttonClickEvent -> {
+
+                if(namesListToConditions.contains(inputName.getValue())){
+                    inputName.setInvalid(true);
+                    Notification.show("ERROR - Zmienna o podanej nazwie już istnieje",
+                            5000, Notification.Position.MIDDLE);
+                    return;
+
+                }
+
                 listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue().toString(),inputDisplayName.getValue()));
                // System.out.println(listOfInputs.get(listOfInputs.size()-1).toString());
                 selectlistOfInputs.setItems(listOfInputs);
