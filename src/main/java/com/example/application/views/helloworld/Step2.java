@@ -265,6 +265,14 @@ public class Step2 extends HorizontalLayout {
 
         Button addCondition = new Button("Dodaj Warunek");
         addCondition.addClickListener(e->{
+            if(listOfBuyConditions.size()>0){
+                if(!(listOfBuyConditions.get(listOfBuyConditions.size()-1).equals(" && ") || listOfBuyConditions.get(listOfBuyConditions.size()-1).equals(" || "))){
+                    //TODO DIALOG OPEN
+                    dialogWithOperators(listOfBuyConditions,listOfBuyConditionsTxt);
+                    return;
+                }
+            }
+
             if(selectBuyCondition1.getValue()==null || selectOperator.getValue()==null
                     || selectBuyCondition2.getValue()==null){
                 Notification.show("ERROR - Wszystkie wymagane pola nie zostały wybrane",3000,
@@ -287,36 +295,6 @@ public class Step2 extends HorizontalLayout {
             } catch (IllegalAccessException illegalAccessException) {
                 illegalAccessException.printStackTrace();
             }
-
-
-            Dialog dialog = new Dialog();
-            dialog.setCloseOnOutsideClick(true);
-            dialog.setCloseOnEsc(true);
-            Text text = new Text("Jeżeli chcesz dodać kolejny warunek, wybierz zależność pomiędzy nim a poprzednim");
-            Select<String> warunek = new Select<>(" && ", " || ",
-                    "Nie chce dodawać więcej warunków");
-            warunek.setLabel("Zależność pomiędzy warunkami");
-            warunek.setHelperText(
-                    "Wybierz '&&' jeżeli oba warunki muszą zostać spełnione, lub '||' jeżeli wystarczy, aby jeden z " +
-                            "warunków został spełniony");
-            Button saveInput = new Button("Dodaj zależność");
-            saveInput.addClickListener(save->{
-                if(warunek.getValue()!=null)
-                {
-                    if(warunek.getValue().equals(" && ") || warunek.getValue().equals(" || ")) {
-                        listOfBuyConditions.add(warunek.getValue());
-                     //   System.out.println(listOfBuyConditions.toString());
-                        listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
-
-                        dialog.close();
-                    }
-                }
-                dialog.close();
-            });
-            dialog.add(text,warunek,saveInput);
-
-            dialog.open();
-
 
         });
         add(buyConditionsText);
@@ -383,6 +361,14 @@ public class Step2 extends HorizontalLayout {
 
         Button addSellCondition = new Button("Dodaj Warunek");
         addSellCondition.addClickListener(e->{
+            if(listOfSellConditions.size()>0){
+                if(!(listOfSellConditions.get(listOfSellConditions.size()-1).equals(" && ") || listOfSellConditions.get(listOfSellConditions.size()-1).equals(" || "))){
+                    //TODO DIALOG OPEN
+                    dialogWithOperators(listOfSellConditions,listOfSellConditionsTxt);
+                    return;
+                }
+            }
+
             if(selectSellCondition1.getValue()==null || selectSellOperator.getValue()==null
                     || selectSellCondition2.getValue()==null){
                 Notification.show("ERROR - Wszystkie wymagane pola nie zostały wybrane",3000,
@@ -406,33 +392,6 @@ public class Step2 extends HorizontalLayout {
                 illegalAccessException.printStackTrace();
             }
 
-            Dialog dialog = new Dialog();
-            dialog.setCloseOnOutsideClick(true);
-            dialog.setCloseOnEsc(true);
-            Text text = new Text("Jeżeli chcesz dodać kolejny warunek, wybierz zależność pomiędzy nim a poprzednim");
-            Select<String> warunek = new Select<>(" && ", " || ",
-                    "Nie chce dodawać więcej warunków");
-            warunek.setLabel("Zależność pomiędzy warunkami");
-            warunek.setHelperText(
-                    "Wybierz '&&' jeżeli oba warunki muszą zostać spełnione, lub '||' jeżeli wystarczy, aby jeden z " +
-                            "warunków został spełniony");
-            Button saveInput = new Button("Dodaj zależność");
-            saveInput.addClickListener(save->{
-                if(warunek.getValue()!=null)
-                {
-                    if(warunek.getValue().equals(" && ") || warunek.getValue().equals(" || ")) {
-                        listOfSellConditions.add(warunek.getValue());
-                       // System.out.println(listOfSellConditions.toString());
-                        listOfSellConditionsTxt.setText(listOfSellConditions.toString());
-
-                        dialog.close();
-                    }
-                }
-                dialog.close();
-            });
-            dialog.add(text,warunek,saveInput);
-
-            dialog.open();
 
         });
         add(sellConditionsText);
@@ -531,6 +490,36 @@ public class Step2 extends HorizontalLayout {
         layout.add(generateCheckForOpen);
         return layout;
 
+    }
+
+    void dialogWithOperators(List<String> listOfConditions, Text outputText){
+        Dialog dialog = new Dialog();
+        dialog.setCloseOnOutsideClick(true);
+        dialog.setCloseOnEsc(true);
+        Text text = new Text("Jeżeli chcesz dodać kolejny warunek, wybierz zależność pomiędzy nim a poprzednim");
+        Select<String> warunek = new Select<>(" && ", " || ",
+                "Nie chce dodawać więcej warunków");
+        warunek.setLabel("Zależność pomiędzy warunkami");
+        warunek.setHelperText(
+                "Wybierz '&&' jeżeli oba warunki muszą zostać spełnione, lub '||' jeżeli wystarczy, aby jeden z " +
+                        "warunków został spełniony");
+        Button saveInput = new Button("Dodaj zależność");
+        saveInput.addClickListener(save->{
+            if(warunek.getValue()!=null)
+            {
+                if(warunek.getValue().equals(" && ") || warunek.getValue().equals(" || ")) {
+                    listOfConditions.add(warunek.getValue());
+                    // System.out.println(listOfSellConditions.toString());
+                    outputText.setText(listOfConditions.toString());
+
+                    dialog.close();
+                }
+            }
+            dialog.close();
+        });
+        dialog.add(text,warunek,saveInput);
+
+        dialog.open();
     }
 
 
