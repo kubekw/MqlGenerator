@@ -316,6 +316,37 @@ public class Step2 extends HorizontalLayout {
         return layout;
     }
 
+    boolean listOfConditionsIsOK(){
+
+        if(listOfBuyConditions.size()>0){
+            if(listOfBuyConditions.get(listOfBuyConditions.size()-1).equals(" && ")
+                || listOfBuyConditions.get(listOfBuyConditions.size()-1).equals(" || ") )
+            {
+            Notification.show("ERROR - lista warunków kupna kończy się operatorem logicznym, a brakuje kolejnego warunku",
+                    3000, Notification.Position.MIDDLE);
+            return false;
+            }
+        }
+        if(listOfSellConditions.size()>0){
+            if(listOfSellConditions.get(listOfSellConditions.size()-1).equals(" && ")
+                    || listOfSellConditions.get(listOfSellConditions.size()-1).equals(" || ") )
+            {
+                Notification.show("ERROR - lista warunków sprzedaży kończy się operatorem logicznym, a brakuje kolejnego warunku",
+                        3000, Notification.Position.MIDDLE);
+                return false;
+            }
+
+        }
+        if(listOfSellConditions.isEmpty() && listOfBuyConditions.isEmpty() ){
+            Notification.show("ERROR - Obie listy warunków są puste, zlecenie nigdy znie zostanie otwarte.",
+                    3000, Notification.Position.MIDDLE);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     private Component buyConditionsList() {
         VerticalLayout layout = new VerticalLayout();
 
@@ -458,6 +489,10 @@ public class Step2 extends HorizontalLayout {
         Button generateCheckForOpen = new Button("Generuj");
         generateCheckForOpen.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         generateCheckForOpen.addClickListener(buttonClickEvent -> {
+
+            if (!listOfConditionsIsOK()){
+                return;
+            };
 
             String inputs = "";
             for(Input i : listOfInputs){
