@@ -1,27 +1,37 @@
 package com.example.application.model.sections;
 
 import java.util.List;
+import java.util.Set;
 
 public class voidCheckForClose {
 
 
-    public static String checkForClose(List<String> longClose, List<String> shortClose, List<String> Variables){
+    public static String checkForClose(Set<String> functions, Set<String> Variables,
+                                       List<String> sellConditionslist, List<String> buyConditionalList){
 
-         String closeLong="";
+        String tradeFunctions ="";
 
-        for (String str : longClose) {
-            closeLong = closeLong + str;
+        for (String func :
+                functions) {
+            tradeFunctions = tradeFunctions + func+'\n';
         }
 
-        String closeShort="";
-
-        for (String str: shortClose){
-            closeShort = closeShort + str;
-        }
-
-        String varibleInitial="";
+        String varibleInitial="\n";
         for(String s: Variables){
             varibleInitial = varibleInitial +"double "+s+";"+'\n';
+        }
+
+        String sellConditionals="";
+
+
+        for (String str:sellConditionslist) {
+            sellConditionals = sellConditionals + str;
+        }
+
+        String buyConditionals="";
+
+        for(String str: buyConditionalList){
+            buyConditionals = buyConditionals + str;
         }
 
 
@@ -32,6 +42,10 @@ public class voidCheckForClose {
                 "  {\n" +
                 varibleInitial+
                 "\n"+
+                //LISTA FUNKCJI
+                "//--- get functions\n" +
+                tradeFunctions +
+                "\n"+
                 "   for(int i=0;i<OrdersTotal();i++)\n" +
                 "     {\n" +
                 "      if(OrderSelect(i,SELECT_BY_POS,MODE_TRADES)==false) break;\n" +
@@ -39,7 +53,7 @@ public class voidCheckForClose {
                 "      //--- check order type \n" +
                 "      if(OrderType()==OP_BUY)\n" +
                 "        {\n" +//TODO WARUNKI ZAMYKANIA LONGÓW
-                "         if("+closeLong+")\n" +
+                "         if("+buyConditionals+")\n" +
                 "           {\n" +
                 "            if(!OrderClose(OrderTicket(),OrderLots(),Bid,3,White))\n" +
                 "               Print(\"OrderClose error \",GetLastError());\n" +
@@ -48,7 +62,7 @@ public class voidCheckForClose {
                 "        }\n" +
                 "      if(OrderType()==OP_SELL)\n" +
                 "        {\n" +
-                "         if("+closeLong+")\n" +
+                "         if("+sellConditionals+")\n" +
                 "           {\n" +
                 "            if(!OrderClose(OrderTicket(),OrderLots(),Ask,3,White))\n" +
                 "               Print(\"OrderClose error \",GetLastError());\n" +

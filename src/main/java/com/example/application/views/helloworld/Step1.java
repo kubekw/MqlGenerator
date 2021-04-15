@@ -93,7 +93,7 @@ public class Step1 extends HorizontalLayout {
 
         //TESTER
         //TODO Przykład walidacji do pracy
-        saveAngGotoStep2 = new Button("Zapisz i przejdź do kolejnego kroku");
+        saveAngGotoStep2 = new Button("Przejdź do kolejnego kroku");
         saveAngGotoStep2.setAutofocus(true);
         saveAngGotoStep2.addClickListener(e-> {
             if (magicma.getValue() == null) {

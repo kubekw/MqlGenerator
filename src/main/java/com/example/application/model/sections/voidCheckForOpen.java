@@ -23,7 +23,7 @@ public class voidCheckForOpen {
 
         String sellConditionals="";
 
-        //Todo ADD MANY CONDITIONS AND OPERATORS
+
         for (String str:sellConditionslist) {
             sellConditionals = sellConditionals + str;
         }

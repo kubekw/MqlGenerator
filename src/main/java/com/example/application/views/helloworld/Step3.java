@@ -4,20 +4,17 @@ import com.example.application.model.Input;
 import com.example.application.model.functions.MA;
 import com.example.application.model.functions.Rsi;
 import com.example.application.model.sections.CalcOpenPos;
+import com.example.application.model.sections.voidCheckForClose;
 import com.example.application.model.sections.voidCheckForOpen;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
@@ -27,40 +24,45 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-@Route(value = "step2", layout = MainView.class)
-@PageTitle("Krok drugi - warunki otwierania zleceń")
+@Route(value = "step3", layout = MainView.class)
+@PageTitle("Krok trzeci - warunki zamknięcia zleceń")
 @CssImport("./views/helloworld/hello-world-view.css")
-public class Step2 extends HorizontalLayout {
+public class Step3 extends Step2 {
 
+    //TODO zaczytanie z bazy danych
     List<Object> listOfFunction = new ArrayList<>();
     Set<String> listOfVarNames = new TreeSet<>();
     Set<String> listOfInputNames = new TreeSet<>();
     Set<String> namesListToConditions = new TreeSet<>();
 
-    Select<String> selectBuyCondition1 = new Select<>();
-    Select<String> selectBuyCondition2 = new Select<>();
+    Select<String> selectCloseBuyCondition1 = new Select<>();
+    Select<String> selectCloseBuyCondition2 = new Select<>();
     Select<String> selectOperator = new Select<>();
-    Select<String> selectSellCondition1 = new Select<>();
-    Select<String> selectSellCondition2 = new Select<>();
-    Select<String> selectSellOperator = new Select<>();
+    Select<String> selectCloseSellCondition1 = new Select<>();
+    Select<String> selectCloseSellCondition2 = new Select<>();
+    Select<String> selectCloseSellOperator = new Select<>();
 
     List<Input> listOfInputs = new ArrayList<>();
     List<String> listOfOperators = new ArrayList<>();
 
 
-    List<String> listOfSellConditions = new ArrayList<>();
-    List<String> listOfBuyConditions = new ArrayList<>();
-    Text listOfBuyConditionsTxt = new Text(listOfBuyConditions.toString());
-    Text listOfSellConditionsTxt = new Text(listOfSellConditions.toString());
+    List<String> listOfCloseSellConditions = new ArrayList<>();
+    List<String> listOfCloseBuyConditions = new ArrayList<>();
+    Text listOfCloseBuyConditionsTxt = new Text(listOfCloseBuyConditions.toString());
+    Text listOfCloseSellConditionsTxt = new Text(listOfCloseSellConditions.toString());
 
     Set<String> usedFunctionsNames = new TreeSet<>();
     Set<String> usedFunctions = new TreeSet<>();
 
     //TODO - STANDARD INPUTS BEFORE NEXT STEP
 
-    public Step2() throws IllegalAccessException {
+    public Step3() throws IllegalAccessException {
+
         addClassName("hello-world-view");
 
         listOfOperators.add(" > ");
@@ -77,11 +79,11 @@ public class Step2 extends HorizontalLayout {
 
         add(funcEditor());
         add(inputs());
-        add(buyConditions());
-        add(buyConditionsList());
-        add(sellConditions());
-        add(sellConditionsList());
-        add(generateVoidCheckForOpen());
+        add(buyCloseConditions());
+        add(buyCloseConditionsList());
+        add(sellCloseConditions());
+        add(sellCloseConditionsList());
+        add(generateVoidCheckForClose());
 
         NativeButton buttonNavi = new NativeButton(
                 "Powrót do początku");
@@ -194,7 +196,7 @@ public class Step2 extends HorizontalLayout {
 
 
         layout.add(select, funcSelection);
-        layout.setVerticalComponentAlignment(FlexComponent.Alignment.END,select,funcSelection);
+        layout.setVerticalComponentAlignment(Alignment.END,select,funcSelection);
 
         return layout;
     }
@@ -250,48 +252,48 @@ public class Step2 extends HorizontalLayout {
         });
 
         layout.add(selectlistOfInputs,addInput);
-        layout.setVerticalComponentAlignment(FlexComponent.Alignment.END,selectlistOfInputs,addInput);
+        layout.setVerticalComponentAlignment(Alignment.END,selectlistOfInputs,addInput);
         return layout;
     }
 
 
-    private Component buyConditions() throws IllegalAccessException {
+    private Component buyCloseConditions() throws IllegalAccessException {
         HorizontalLayout layout = new HorizontalLayout();
 
-        Text buyConditionsText = new Text("Ustal warunki otwarcia długich pozycji");
+        Text buyConditionsText = new Text("Ustal warunki zamknięcia długich pozycji");
 
         refreshListsOfVarNames();//TODO WALIDACJA i opisy
-        selectBuyCondition1.setItems(namesListToConditions);
+        selectCloseBuyCondition1.setItems(namesListToConditions);
         selectOperator.setItems(listOfOperators);
-        selectBuyCondition2.setItems(namesListToConditions);
+        selectCloseBuyCondition2.setItems(namesListToConditions);
 
         Button addCondition = new Button("Dodaj Warunek");
         addCondition.addClickListener(e->{
-            if(listOfBuyConditions.size()>0){
-                if(!(listOfBuyConditions.get(listOfBuyConditions.size()-1).equals(" && ") || listOfBuyConditions.get(listOfBuyConditions.size()-1).equals(" || "))){
+            if(listOfCloseBuyConditions.size()>0){
+                if(!(listOfCloseBuyConditions.get(listOfCloseBuyConditions.size()-1).equals(" && ") || listOfCloseBuyConditions.get(listOfCloseBuyConditions.size()-1).equals(" || "))){
                     //TODO DIALOG OPEN
-                    dialogWithOperators(listOfBuyConditions,listOfBuyConditionsTxt);
+                    dialogWithOperators(listOfCloseBuyConditions, listOfCloseBuyConditionsTxt);
                     return;
                 }
             }
 
-            if(selectBuyCondition1.getValue()==null || selectOperator.getValue()==null
-                    || selectBuyCondition2.getValue()==null){
+            if(selectCloseBuyCondition1.getValue()==null || selectOperator.getValue()==null
+                    || selectCloseBuyCondition2.getValue()==null){
                 Notification.show("ERROR - Wszystkie wymagane pola nie zostały wybrane",3000,
                         Notification.Position.MIDDLE);
-                selectBuyCondition1.setInvalid(true);
-                selectBuyCondition2.setInvalid(true);
+                selectCloseBuyCondition1.setInvalid(true);
+                selectCloseBuyCondition2.setInvalid(true);
                 selectOperator.setInvalid(true);
 
                 return;
             }
-            String contidion = selectBuyCondition1.getValue()+selectOperator.getValue()+selectBuyCondition2.getValue();
-            usedFunctionsNames.add(selectBuyCondition1.getValue());
-            usedFunctionsNames.add(selectBuyCondition2.getValue());
+            String contidion = selectCloseBuyCondition1.getValue()+selectOperator.getValue()+ selectCloseBuyCondition2.getValue();
+            usedFunctionsNames.add(selectCloseBuyCondition1.getValue());
+            usedFunctionsNames.add(selectCloseBuyCondition2.getValue());
            // System.out.println(contidion);
-            listOfBuyConditions.add(contidion);
+            listOfCloseBuyConditions.add(contidion);
            // System.out.println(listOfBuyConditions.toString());
-            listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
+            listOfCloseBuyConditionsTxt.setText(listOfCloseBuyConditions.toString());
             try {
                 addUsedFunctionsToList();
             } catch (IllegalAccessException illegalAccessException) {
@@ -300,94 +302,97 @@ public class Step2 extends HorizontalLayout {
 
         });
         add(buyConditionsText);
-        layout.add(selectBuyCondition1, selectOperator, selectBuyCondition2, addCondition);
+        layout.add(selectCloseBuyCondition1, selectOperator, selectCloseBuyCondition2, addCondition);
 
         return layout;
     }
 
     boolean listOfConditionsIsOK(){
 
-        if(listOfBuyConditions.size()>0){
-            if(listOfBuyConditions.get(listOfBuyConditions.size()-1).equals(" && ")
-                || listOfBuyConditions.get(listOfBuyConditions.size()-1).equals(" || ") )
+        if(listOfCloseBuyConditions.size()>0){
+            if(listOfCloseBuyConditions.get(listOfCloseBuyConditions.size()-1).equals(" && ")
+                || listOfCloseBuyConditions.get(listOfCloseBuyConditions.size()-1).equals(" || ") )
             {
-            Notification.show("ERROR - lista warunków kupna kończy się operatorem logicznym, a brakuje kolejnego warunku",
+            Notification.show("ERROR - lista warunków zamknięcia zleceń kupna kończy się operatorem logicznym," +
+                            " a brakuje kolejnego warunku",
                     3000, Notification.Position.MIDDLE);
             return false;
             }
         }
-        if(listOfSellConditions.size()>0){
-            if(listOfSellConditions.get(listOfSellConditions.size()-1).equals(" && ")
-                    || listOfSellConditions.get(listOfSellConditions.size()-1).equals(" || ") )
+        if(listOfCloseSellConditions.size()>0){
+            if(listOfCloseSellConditions.get(listOfCloseSellConditions.size()-1).equals(" && ")
+                    || listOfCloseSellConditions.get(listOfCloseSellConditions.size()-1).equals(" || ") )
             {
-                Notification.show("ERROR - lista warunków sprzedaży kończy się operatorem logicznym, a brakuje kolejnego warunku",
+                Notification.show("ERROR - lista warunków zamknięcia zleceń sprzedaży kończy się operatorem logicznym," +
+                                " a brakuje kolejnego warunku",
                         3000, Notification.Position.MIDDLE);
                 return false;
             }
 
         }
-        if(listOfSellConditions.isEmpty() && listOfBuyConditions.isEmpty() ){
-            Notification.show("ERROR - Obie listy warunków są puste, zlecenie nigdy znie zostanie otwarte.",
-                    3000, Notification.Position.MIDDLE);
-            return false;
-        }
-        else {
-            return true;
-        }
+//        if(listOfSellConditions.isEmpty() && listOfBuyConditions.isEmpty() ){
+//            Notification.show("ERROR - Obie listy warunków są puste, zlecenie nigdy nie zostanie otwarte.",
+//                    3000, Notification.Position.MIDDLE);
+//            return false;
+//        }
+//        else {
+//            return true;
+//        }
+        return true;
     }
 
-    private Component buyConditionsList() {
+    private Component buyCloseConditionsList() {
         VerticalLayout layout = new VerticalLayout();
 
         Text buyConditionsListText = new Text("Lista dodanych warunków:");
         Button removeAllBuyConditions = new Button("Wyczyść");
         removeAllBuyConditions.addClickListener(buttonClickEvent -> {
-           listOfBuyConditions.removeAll(listOfBuyConditions);
-           listOfBuyConditionsTxt.setText(listOfBuyConditions.toString());
+           listOfCloseBuyConditions.removeAll(listOfCloseBuyConditions);
+           listOfCloseBuyConditionsTxt.setText(listOfCloseBuyConditions.toString());
         });
 
-        layout.add(buyConditionsListText,listOfBuyConditionsTxt, removeAllBuyConditions);
+        layout.add(buyConditionsListText, listOfCloseBuyConditionsTxt, removeAllBuyConditions);
         return layout;
     }
 
-    private Component sellConditions() throws IllegalAccessException {
+    private Component sellCloseConditions() throws IllegalAccessException {
         HorizontalLayout layout = new HorizontalLayout();
 
-        Text sellConditionsText = new Text("Ustal warunki otwarcia któtkich pozycji");
+        Text sellConditionsText = new Text("Ustal warunki zamknięcia któtkich pozycji");
 
         refreshListsOfVarNames();//TODO WALIDACJA i opisy
-        selectSellCondition1.setItems(namesListToConditions);
-        selectSellOperator.setItems(listOfOperators);
-        selectSellCondition2.setItems(namesListToConditions);
+        selectCloseSellCondition1.setItems(namesListToConditions);
+        selectCloseSellOperator.setItems(listOfOperators);
+        selectCloseSellCondition2.setItems(namesListToConditions);
 
 
         Button addSellCondition = new Button("Dodaj Warunek");
         addSellCondition.addClickListener(e->{
-            if(listOfSellConditions.size()>0){
-                if(!(listOfSellConditions.get(listOfSellConditions.size()-1).equals(" && ") || listOfSellConditions.get(listOfSellConditions.size()-1).equals(" || "))){
+            if(listOfCloseSellConditions.size()>0){
+                if(!(listOfCloseSellConditions.get(listOfCloseSellConditions.size()-1).equals(" && ") || listOfCloseSellConditions.get(listOfCloseSellConditions.size()-1).equals(" || "))){
                     //TODO DIALOG OPEN
-                    dialogWithOperators(listOfSellConditions,listOfSellConditionsTxt);
+                    dialogWithOperators(listOfCloseSellConditions, listOfCloseSellConditionsTxt);
                     return;
                 }
             }
 
-            if(selectSellCondition1.getValue()==null || selectSellOperator.getValue()==null
-                    || selectSellCondition2.getValue()==null){
+            if(selectCloseSellCondition1.getValue()==null || selectCloseSellOperator.getValue()==null
+                    || selectCloseSellCondition2.getValue()==null){
                 Notification.show("ERROR - Wszystkie wymagane pola nie zostały wybrane",3000,
                         Notification.Position.MIDDLE);
-                selectSellCondition1.setInvalid(true);
-                selectSellCondition2.setInvalid(true);
-                selectSellOperator.setInvalid(true);
+                selectCloseSellCondition1.setInvalid(true);
+                selectCloseSellCondition2.setInvalid(true);
+                selectCloseSellOperator.setInvalid(true);
 
                 return;
             }
-            String contidion = selectSellCondition1.getValue()+selectSellOperator.getValue()+selectSellCondition2.getValue();
-            usedFunctionsNames.add(selectSellCondition1.getValue());
-            usedFunctionsNames.add(selectSellCondition2.getValue());
+            String contidion = selectCloseSellCondition1.getValue()+ selectCloseSellOperator.getValue()+ selectCloseSellCondition2.getValue();
+            usedFunctionsNames.add(selectCloseSellCondition1.getValue());
+            usedFunctionsNames.add(selectCloseSellCondition2.getValue());
           //  System.out.println(contidion);
-            listOfSellConditions.add(contidion);
+            listOfCloseSellConditions.add(contidion);
            // System.out.println("sell: "+listOfSellConditions.toString());
-            listOfSellConditionsTxt.setText(listOfSellConditions.toString());
+            listOfCloseSellConditionsTxt.setText(listOfCloseSellConditions.toString());
             try {
                 addUsedFunctionsToList();
             } catch (IllegalAccessException illegalAccessException) {
@@ -397,7 +402,7 @@ public class Step2 extends HorizontalLayout {
 
         });
         add(sellConditionsText);
-        layout.add(selectSellCondition1, selectSellOperator, selectSellCondition2, addSellCondition);
+        layout.add(selectCloseSellCondition1, selectCloseSellOperator, selectCloseSellCondition2, addSellCondition);
 
         return layout;
     }
@@ -416,17 +421,17 @@ public class Step2 extends HorizontalLayout {
 
     }
 
-    private Component sellConditionsList() {
+    private Component sellCloseConditionsList() {
         VerticalLayout layout = new VerticalLayout();
 
         Text sellConditionsListText = new Text("Lista dodanych warunków:");
         Button removeAllSellConditions = new Button("Wyczyść");
         removeAllSellConditions.addClickListener(buttonClickEvent -> {
-            listOfSellConditions.removeAll(listOfSellConditions);
-            listOfSellConditionsTxt.setText(listOfSellConditions.toString());
+            listOfCloseSellConditions.removeAll(listOfCloseSellConditions);
+            listOfCloseSellConditionsTxt.setText(listOfCloseSellConditions.toString());
         });
 
-        layout.add(sellConditionsListText,listOfSellConditionsTxt, removeAllSellConditions);
+        layout.add(sellConditionsListText, listOfCloseSellConditionsTxt, removeAllSellConditions);
         return layout;
     }
 
@@ -447,16 +452,16 @@ public class Step2 extends HorizontalLayout {
         }
         namesListToConditions.addAll(listOfVarNames);
         namesListToConditions.addAll(listOfInputNames);
-        selectBuyCondition1.setItems(namesListToConditions);
-        selectBuyCondition2.setItems(namesListToConditions);
-        selectSellCondition1.setItems(namesListToConditions);
-        selectSellCondition2.setItems(namesListToConditions);
+        selectCloseBuyCondition1.setItems(namesListToConditions);
+        selectCloseBuyCondition2.setItems(namesListToConditions);
+        selectCloseSellCondition1.setItems(namesListToConditions);
+        selectCloseSellCondition2.setItems(namesListToConditions);
 
     }
 
-    private Component generateVoidCheckForOpen(){
+    private Component generateVoidCheckForClose(){
         VerticalLayout layout = new VerticalLayout();
-        Button generateCheckForOpen = new Button("Przejdź do kolejnego kroku");
+        Button generateCheckForOpen = new Button("Generuj");
         generateCheckForOpen.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         generateCheckForOpen.addClickListener(buttonClickEvent -> {
 
@@ -476,16 +481,16 @@ public class Step2 extends HorizontalLayout {
                 }
             }
 
-            if(listOfSellConditions.isEmpty()){
-                listOfSellConditions.add("false");
+            if(listOfCloseSellConditions.isEmpty()){
+                listOfCloseSellConditions.add("false");
             }
 
-            if(listOfBuyConditions.isEmpty()){
-                listOfBuyConditions.add("false");
+            if(listOfCloseBuyConditions.isEmpty()){
+                listOfCloseBuyConditions.add("false");
             }
 
-           String step2Result =inputs + CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(usedFunctions,variblesToInitial,listOfSellConditions,listOfBuyConditions);
-            System.out.println(step2Result);
+           String step3Result =inputs  + voidCheckForClose.checkForClose(usedFunctions, variblesToInitial, listOfCloseSellConditions, listOfCloseBuyConditions);
+            System.out.println(step3Result);
 
             generateCheckForOpen.getUI().ifPresent(ui ->
                     ui.navigate("step3"));
