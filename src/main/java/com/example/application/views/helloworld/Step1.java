@@ -96,7 +96,7 @@ public class Step1 extends HorizontalLayout {
 
             if(magicma.getValue()!=null && magicma.getValue()>=0) {
                 step1Result = Header.getHeader(magicma.getValue(), author.getValue(), website.getValue(), description.getValue());
-                bot.step1ResultInString=step1Result;
+                bot.setStep1ResultInString(step1Result);
                 System.out.println(step1Result);
                 saveAngGotoStep2.getUI().ifPresent(ui ->
                         ui.navigate("step2"));

@@ -22,6 +22,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.frontend.installer.DefaultFileDownloader;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
@@ -94,7 +95,10 @@ public class Step3 extends HorizontalLayout {
                         ui.navigate("step1"))
         );
         add(buttonNavi);
+
+
     }
+
 
     private Component funcEditor(){
         HorizontalLayout layout = new HorizontalLayout();
@@ -494,15 +498,15 @@ public class Step3 extends HorizontalLayout {
            String step3Result = voidCheckForClose.checkForClose(usedFunctions, variblesToInitial, listOfCloseSellConditions, listOfCloseBuyConditions);
 
             String temp = bot.step2ResultInString;
-            bot.step2ResultInString=inputs+temp;
+            bot.setStep2ResultInString(inputs+temp);
 
-            bot.step3ResultInString=step3Result;
+            bot.setStep3ResultInString(step3Result);
             System.out.println(step3Result);
 
             bot.soutBot();
 
             generateCheckForOpen.getUI().ifPresent(ui ->
-                    ui.navigate("step3"));
+                    ui.navigate("download"));
         });
 
 
@@ -510,6 +514,7 @@ public class Step3 extends HorizontalLayout {
         return layout;
 
     }
+
 
     void dialogWithOperators(List<String> listOfConditions, Text outputText){
         Dialog dialog = new Dialog();
