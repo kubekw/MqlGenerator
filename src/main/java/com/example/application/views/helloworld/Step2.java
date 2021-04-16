@@ -35,6 +35,11 @@ import java.util.*;
 public class Step2 extends HorizontalLayout {
 
     List<Object> listOfFunction = new ArrayList<>();
+
+    public List<Object> getListOfFunction() {
+        return listOfFunction;
+    }
+
     Set<String> listOfVarNames = new TreeSet<>();
     Set<String> listOfInputNames = new TreeSet<>();
     Set<String> namesListToConditions = new TreeSet<>();

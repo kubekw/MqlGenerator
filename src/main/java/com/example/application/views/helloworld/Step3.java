@@ -32,7 +32,7 @@ import java.util.TreeSet;
 @Route(value = "step3", layout = MainView.class)
 @PageTitle("Krok trzeci - warunki zamknięcia zleceń")
 @CssImport("./views/helloworld/hello-world-view.css")
-public class Step3 extends Step2 {
+public class Step3 extends HorizontalLayout {
 
     //TODO zaczytanie z bazy danych
     List<Object> listOfFunction = new ArrayList<>();
@@ -75,7 +75,6 @@ public class Step3 extends Step2 {
         MA ma = new MA();
         listOfFunction.add(rsi);
         listOfFunction.add(ma);
-
 
         add(funcEditor());
         add(inputs());
