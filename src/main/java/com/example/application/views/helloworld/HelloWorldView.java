@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Route(value = "hello", layout = MainView.class)
-@RouteAlias(value = "", layout = MainView.class)
+@RouteAlias(value = "hello", layout = MainView.class)
 @PageTitle("Hello World")
 @CssImport("./views/helloworld/hello-world-view.css")
 public class HelloWorldView extends HorizontalLayout {

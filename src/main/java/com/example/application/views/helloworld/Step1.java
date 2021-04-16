@@ -1,34 +1,28 @@
 package com.example.application.views.helloworld;
 
-import com.example.application.NamesRepo;
-import com.example.application.PersonsNames;
-import com.example.application.model.Main;
 import com.example.application.model.sections.Header;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.NativeButton;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Random;
 
 @Route(value = "step1", layout = MainView.class)
+@RouteAlias(value = "", layout = MainView.class)
 @PageTitle("Krok pierwszy")
 @CssImport("./views/helloworld/hello-world-view.css")
 public class Step1 extends HorizontalLayout {
+    @Autowired
+    Bot bot;
 
     private IntegerField magicma;
     private TextField author;
@@ -102,6 +96,7 @@ public class Step1 extends HorizontalLayout {
 
             if(magicma.getValue()!=null && magicma.getValue()>=0) {
                 step1Result = Header.getHeader(magicma.getValue(), author.getValue(), website.getValue(), description.getValue());
+                bot.step1ResultInString=step1Result;
                 System.out.println(step1Result);
                 saveAngGotoStep2.getUI().ifPresent(ui ->
                         ui.navigate("step2"));

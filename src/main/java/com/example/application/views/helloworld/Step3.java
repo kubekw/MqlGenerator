@@ -22,6 +22,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ import java.util.TreeSet;
 @PageTitle("Krok trzeci - warunki zamknięcia zleceń")
 @CssImport("./views/helloworld/hello-world-view.css")
 public class Step3 extends HorizontalLayout {
+    @Autowired
+    Bot bot;
 
     //TODO zaczytanie z bazy danych
     List<Object> listOfFunction = new ArrayList<>();
@@ -468,7 +471,7 @@ public class Step3 extends HorizontalLayout {
                 return;
             };
 
-            String inputs = "";
+            String inputs = "\n";
             for(Input i : listOfInputs){
                 inputs=inputs+i.toString();
             }
@@ -488,8 +491,15 @@ public class Step3 extends HorizontalLayout {
                 listOfCloseBuyConditions.add("false");
             }
 
-           String step3Result =inputs  + voidCheckForClose.checkForClose(usedFunctions, variblesToInitial, listOfCloseSellConditions, listOfCloseBuyConditions);
+           String step3Result = voidCheckForClose.checkForClose(usedFunctions, variblesToInitial, listOfCloseSellConditions, listOfCloseBuyConditions);
+
+            String temp = bot.step2ResultInString;
+            bot.step2ResultInString=inputs+temp;
+
+            bot.step3ResultInString=step3Result;
             System.out.println(step3Result);
+
+            bot.soutBot();
 
             generateCheckForOpen.getUI().ifPresent(ui ->
                     ui.navigate("step3"));

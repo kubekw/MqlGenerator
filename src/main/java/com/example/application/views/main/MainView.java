@@ -3,6 +3,7 @@ package com.example.application.views.main;
 import java.util.Optional;
 
 import com.example.application.views.about.AboutView2;
+import com.example.application.views.helloworld.Step1;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -85,7 +86,7 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Hello World", HelloWorldView.class), createTab("About", AboutView.class),
+        return new Tab[]{createTab("Bot Generator", Step1.class), createTab("About", AboutView.class),
                 createTab("Nowa Strona", AboutView2.class)};
     }
 

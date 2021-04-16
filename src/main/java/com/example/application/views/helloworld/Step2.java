@@ -25,6 +25,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -33,6 +34,8 @@ import java.util.*;
 @PageTitle("Krok drugi - warunki otwierania zleceń")
 @CssImport("./views/helloworld/hello-world-view.css")
 public class Step2 extends HorizontalLayout {
+    @Autowired
+    Bot bot ;
 
     List<Object> listOfFunction = new ArrayList<>();
 
@@ -490,6 +493,7 @@ public class Step2 extends HorizontalLayout {
             }
 
            String step2Result =inputs + CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(usedFunctions,variblesToInitial,listOfSellConditions,listOfBuyConditions);
+            bot.step2ResultInString=step2Result;
             System.out.println(step2Result);
 
             generateCheckForOpen.getUI().ifPresent(ui ->
