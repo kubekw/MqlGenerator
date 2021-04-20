@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Component
 public class Bot {
@@ -15,6 +17,33 @@ public class Bot {
     List<Object> listOfFunction = new ArrayList<>();
     List<String> listOfOperators = new ArrayList<>();
     List<Input> listOfInputs = new ArrayList<>();
+    Set<String> listOfVarNames = new TreeSet<>();
+    Set<String> listOfInputNames = new TreeSet<>();
+    Set<String> namesListToConditions = new TreeSet<>();
+
+    public Set<String> getNamesListToConditions() {
+        return namesListToConditions;
+    }
+
+    public void setNamesListToConditions(Set<String> namesListToConditions) {
+        this.namesListToConditions = namesListToConditions;
+    }
+
+    public Set<String> getListOfInputNames() {
+        return listOfInputNames;
+    }
+
+    public void setListOfInputNames(Set<String> listOfInputNames) {
+        this.listOfInputNames = listOfInputNames;
+    }
+
+    public Set<String> getListOfVarNames() {
+        return listOfVarNames;
+    }
+
+    public void setListOfVarNames(Set<String> listOfVarNames) {
+        this.listOfVarNames = listOfVarNames;
+    }
 
     public List<Input> getListOfInputs() {
         return listOfInputs;

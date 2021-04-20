@@ -35,11 +35,6 @@ public class Step3 extends HorizontalLayout {
 
     private final Bot bot;
 
-    //TODO zaczytanie z bazy danych
-    Set<String> listOfVarNames = new TreeSet<>();
-    Set<String> listOfInputNames = new TreeSet<>();
-    Set<String> namesListToConditions = new TreeSet<>();
-
     Select<String> selectCloseBuyCondition1 = new Select<>();
     Select<String> selectCloseBuyCondition2 = new Select<>();
     Select<String> selectOperator = new Select<>();
@@ -61,11 +56,6 @@ public class Step3 extends HorizontalLayout {
         this.bot = bot;
 
         addClassName("hello-world-view");
-
-
-        namesListToConditions.add("Ask");
-        namesListToConditions.add("Bid");
-
 
         add(funcEditor());
         add(inputs());
@@ -131,7 +121,7 @@ public class Step3 extends HorizontalLayout {
 
             saveButton.addClickListener(event-> {
 
-                if(namesListToConditions.contains(textFieldList.get(0).getValue())){
+                if(bot.namesListToConditions.contains(textFieldList.get(0).getValue())){
                     textFieldList.get(0).setInvalid(true);
                     Notification.show("ERROR - Zmienna o podanej nazwie już istnieje",
                             5000, Notification.Position.MIDDLE);
@@ -146,7 +136,7 @@ public class Step3 extends HorizontalLayout {
                                 textFieldList.get(6).getValue(), textFieldList.get(7).getValue()));
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
                         select.setItems(bot.listOfFunction);
-                        listOfVarNames.add(textFieldList.get(0).getValue());
+                        bot.listOfVarNames.add(textFieldList.get(0).getValue());
                         try {
                             refreshListsOfVarNames();
                         } catch (IllegalAccessException illegalAccessException) {
@@ -167,7 +157,7 @@ public class Step3 extends HorizontalLayout {
                                 textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue()));
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
                         select.setItems(bot.listOfFunction);
-                        listOfVarNames.add(textFieldList.get(0).getValue());
+                        bot.listOfVarNames.add(textFieldList.get(0).getValue());
                         try {
                             refreshListsOfVarNames();
                         } catch (IllegalAccessException illegalAccessException) {
@@ -220,7 +210,7 @@ public class Step3 extends HorizontalLayout {
 
             saveInput.addClickListener(buttonClickEvent -> {
 
-                if(namesListToConditions.contains(inputName.getValue())){
+                if(bot.namesListToConditions.contains(inputName.getValue())){
                     inputName.setInvalid(true);
                     Notification.show("ERROR - Zmienna o podanej nazwie już istnieje",
                             5000, Notification.Position.MIDDLE);
@@ -256,9 +246,9 @@ public class Step3 extends HorizontalLayout {
         Text buyConditionsText = new Text("Ustal warunki zamknięcia długich pozycji");
 
         refreshListsOfVarNames();//TODO WALIDACJA i opisy
-        selectCloseBuyCondition1.setItems(namesListToConditions);
+        selectCloseBuyCondition1.setItems(bot.namesListToConditions);
         selectOperator.setItems(bot.listOfOperators);
-        selectCloseBuyCondition2.setItems(namesListToConditions);
+        selectCloseBuyCondition2.setItems(bot.namesListToConditions);
 
         Button addCondition = new Button("Dodaj Warunek");
         addCondition.addClickListener(e->{
@@ -354,9 +344,9 @@ public class Step3 extends HorizontalLayout {
         Text sellConditionsText = new Text("Ustal warunki zamknięcia któtkich pozycji");
 
         refreshListsOfVarNames();//TODO WALIDACJA i opisy
-        selectCloseSellCondition1.setItems(namesListToConditions);
+        selectCloseSellCondition1.setItems(bot.namesListToConditions);
         selectCloseSellOperator.setItems(bot.listOfOperators);
-        selectCloseSellCondition2.setItems(namesListToConditions);
+        selectCloseSellCondition2.setItems(bot.namesListToConditions);
 
 
         Button addSellCondition = new Button("Dodaj Warunek");
@@ -437,18 +427,18 @@ public class Step3 extends HorizontalLayout {
             Field[] oGetFields = class2.getDeclaredFields();
            // System.out.println(oGetFields[0].get(o).toString());
             String name = oGetFields[0].get(o).toString();
-            listOfVarNames.add(name);
+            bot.listOfVarNames.add(name);
         }
 
         for (Input input : bot.getListOfInputs()) {
-            listOfInputNames.add(input.getName());
+            bot.listOfInputNames.add(input.getName());
         }
-        namesListToConditions.addAll(listOfVarNames);
-        namesListToConditions.addAll(listOfInputNames);
-        selectCloseBuyCondition1.setItems(namesListToConditions);
-        selectCloseBuyCondition2.setItems(namesListToConditions);
-        selectCloseSellCondition1.setItems(namesListToConditions);
-        selectCloseSellCondition2.setItems(namesListToConditions);
+        bot.namesListToConditions.addAll(bot.listOfVarNames);
+        bot.namesListToConditions.addAll(bot.listOfInputNames);
+        selectCloseBuyCondition1.setItems(bot.namesListToConditions);
+        selectCloseBuyCondition2.setItems(bot.namesListToConditions);
+        selectCloseSellCondition1.setItems(bot.namesListToConditions);
+        selectCloseSellCondition2.setItems(bot.namesListToConditions);
 
     }
 
@@ -469,7 +459,7 @@ public class Step3 extends HorizontalLayout {
 
             Set<String> variblesToInitial = new TreeSet<>();
             for(String str : usedFunctionsNames){
-                if(listOfVarNames.contains(str)){
+                if(bot.listOfVarNames.contains(str)){
                     variblesToInitial.add(str);
                 }
             }
