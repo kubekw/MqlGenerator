@@ -2,6 +2,7 @@ package com.example.application.views.helloworld;
 
 import com.example.application.model.Input;
 import com.example.application.model.functions.MA;
+import com.example.application.model.functions.Momentum;
 import com.example.application.model.functions.Rsi;
 import com.example.application.model.sections.CalcOpenPos;
 import com.example.application.model.sections.voidCheckForOpen;
@@ -63,8 +64,10 @@ public class Step2 extends HorizontalLayout {
 
         Rsi rsi = new Rsi();
         MA ma = new MA();
+        Momentum momentum = new Momentum();
         bot.listOfFunction.add(rsi);
         bot.listOfFunction.add(ma);
+        bot.listOfFunction.add(momentum);
 
 
         add(funcEditor());
