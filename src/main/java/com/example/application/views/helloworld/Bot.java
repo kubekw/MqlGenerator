@@ -2,12 +2,33 @@ package com.example.application.views.helloworld;
 
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class Bot {
 
     public String step1ResultInString;
     public String step2ResultInString;
     public String step3ResultInString;
+    List<Object> listOfFunction = new ArrayList<>();
+    List<String> listOfOperators = new ArrayList<>();
+
+    public List<String> getListOfOperators() {
+        return listOfOperators;
+    }
+
+    public void setListOfOperators(List<String> listOfOperators) {
+        this.listOfOperators = listOfOperators;
+    }
+
+    public List<Object> getListOfFunction() {
+        return listOfFunction;
+    }
+
+    public void setListOfFunction(List<Object> listOfFunction) {
+        this.listOfFunction = listOfFunction;
+    }
 
     public String getStep1ResultInString() {
         return step1ResultInString;

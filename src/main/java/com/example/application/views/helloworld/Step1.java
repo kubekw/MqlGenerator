@@ -12,7 +12,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Random;
 
@@ -21,8 +20,8 @@ import java.util.Random;
 @PageTitle("Krok pierwszy")
 @CssImport("./views/helloworld/hello-world-view.css")
 public class Step1 extends HorizontalLayout {
-    @Autowired
-    Bot bot;
+
+    private final Bot bot;
 
     private IntegerField magicma;
     private TextField author;
@@ -32,7 +31,8 @@ public class Step1 extends HorizontalLayout {
     private String step1Result;
 
 
-    public Step1() {
+    public Step1(Bot bot) {
+        this.bot = bot;
 
 
         //losowy MAGICMA
@@ -96,7 +96,7 @@ public class Step1 extends HorizontalLayout {
 
             if(magicma.getValue()!=null && magicma.getValue()>=0) {
                 step1Result = Header.getHeader(magicma.getValue(), author.getValue(), website.getValue(), description.getValue());
-                bot.setStep1ResultInString(step1Result);
+                this.bot.setStep1ResultInString(step1Result);
                 System.out.println(step1Result);
                 saveAngGotoStep2.getUI().ifPresent(ui ->
                         ui.navigate("step2"));

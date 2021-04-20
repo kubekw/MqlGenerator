@@ -3,9 +3,8 @@ package com.example.application.views.helloworld;
 import com.example.application.model.Input;
 import com.example.application.model.functions.MA;
 import com.example.application.model.functions.Rsi;
-import com.example.application.model.sections.CalcOpenPos;
 import com.example.application.model.sections.voidCheckForClose;
-import com.example.application.model.sections.voidCheckForOpen;
+import com.example.application.model.sections.voidOnTick;
 import com.example.application.views.main.MainView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -22,8 +21,6 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.frontend.installer.DefaultFileDownloader;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -35,11 +32,10 @@ import java.util.TreeSet;
 @PageTitle("Krok trzeci - warunki zamknięcia zleceń")
 @CssImport("./views/helloworld/hello-world-view.css")
 public class Step3 extends HorizontalLayout {
-    @Autowired
-    Bot bot;
+
+    private final Bot bot;
 
     //TODO zaczytanie z bazy danych
-    List<Object> listOfFunction = new ArrayList<>();
     Set<String> listOfVarNames = new TreeSet<>();
     Set<String> listOfInputNames = new TreeSet<>();
     Set<String> namesListToConditions = new TreeSet<>();
@@ -52,7 +48,7 @@ public class Step3 extends HorizontalLayout {
     Select<String> selectCloseSellOperator = new Select<>();
 
     List<Input> listOfInputs = new ArrayList<>();
-    List<String> listOfOperators = new ArrayList<>();
+//    List<String> listOfOperators = new ArrayList<>();
 
 
     List<String> listOfCloseSellConditions = new ArrayList<>();
@@ -65,20 +61,15 @@ public class Step3 extends HorizontalLayout {
 
     //TODO - STANDARD INPUTS BEFORE NEXT STEP
 
-    public Step3() throws IllegalAccessException {
+    public Step3(Bot bot) throws IllegalAccessException {
+        this.bot = bot;
 
         addClassName("hello-world-view");
 
-        listOfOperators.add(" > ");
-        listOfOperators.add(" = ");
-        listOfOperators.add(" < ");
+
         namesListToConditions.add("Ask");
         namesListToConditions.add("Bid");
 
-        Rsi rsi = new Rsi();
-        MA ma = new MA();
-        listOfFunction.add(rsi);
-        listOfFunction.add(ma);
 
         add(funcEditor());
         add(inputs());
@@ -105,7 +96,7 @@ public class Step3 extends HorizontalLayout {
 
         Select<Object> select = new Select<>();
         select.setLabel("Dostępne typy funkcji");
-        select.setItems(listOfFunction);
+        select.setItems(bot.listOfFunction);
         select.setItemLabelGenerator(o -> {
             return o.toString().substring(0,o.toString().indexOf("="));
         });
@@ -154,11 +145,11 @@ public class Step3 extends HorizontalLayout {
 
                 if (select.getValue().getClass() == MA.class){
                     try {
-                        listOfFunction.add(new MA(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
+                        bot.listOfFunction.add(new MA(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
                                 textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue(),
                                 textFieldList.get(6).getValue(), textFieldList.get(7).getValue()));
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
-                        select.setItems(listOfFunction);
+                        select.setItems(bot.listOfFunction);
                         listOfVarNames.add(textFieldList.get(0).getValue());
                         try {
                             refreshListsOfVarNames();
@@ -176,10 +167,10 @@ public class Step3 extends HorizontalLayout {
 
                 else if (select.getValue().getClass() == Rsi.class){
                     try {
-                        listOfFunction.add(new Rsi(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
+                        bot.listOfFunction.add(new Rsi(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
                                 textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue()));
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
-                        select.setItems(listOfFunction);
+                        select.setItems(bot.listOfFunction);
                         listOfVarNames.add(textFieldList.get(0).getValue());
                         try {
                             refreshListsOfVarNames();
@@ -270,7 +261,7 @@ public class Step3 extends HorizontalLayout {
 
         refreshListsOfVarNames();//TODO WALIDACJA i opisy
         selectCloseBuyCondition1.setItems(namesListToConditions);
-        selectOperator.setItems(listOfOperators);
+        selectOperator.setItems(bot.listOfOperators);
         selectCloseBuyCondition2.setItems(namesListToConditions);
 
         Button addCondition = new Button("Dodaj Warunek");
@@ -368,7 +359,7 @@ public class Step3 extends HorizontalLayout {
 
         refreshListsOfVarNames();//TODO WALIDACJA i opisy
         selectCloseSellCondition1.setItems(namesListToConditions);
-        selectCloseSellOperator.setItems(listOfOperators);
+        selectCloseSellOperator.setItems(bot.listOfOperators);
         selectCloseSellCondition2.setItems(namesListToConditions);
 
 
@@ -415,7 +406,7 @@ public class Step3 extends HorizontalLayout {
 
     void addUsedFunctionsToList() throws IllegalAccessException {
 
-        for (Object o : listOfFunction) {
+        for (Object o : bot.getListOfFunction()) {
             Class class2 = o.getClass();
             Field[] oGetFields = class2.getDeclaredFields();
             // System.out.println(oGetFields[0].get(o).toString());
@@ -445,7 +436,7 @@ public class Step3 extends HorizontalLayout {
 
     void refreshListsOfVarNames() throws IllegalAccessException {
         // VAR NAMES EXTRACTOR
-        for (Object o : listOfFunction) {
+        for (Object o : bot.getListOfFunction()) {
             Class class2 = o.getClass();
             Field[] oGetFields = class2.getDeclaredFields();
            // System.out.println(oGetFields[0].get(o).toString());
@@ -495,7 +486,8 @@ public class Step3 extends HorizontalLayout {
                 listOfCloseBuyConditions.add("false");
             }
 
-           String step3Result = voidCheckForClose.checkForClose(usedFunctions, variblesToInitial, listOfCloseSellConditions, listOfCloseBuyConditions);
+           String step3Result = voidCheckForClose.checkForClose(usedFunctions, variblesToInitial, listOfCloseSellConditions, listOfCloseBuyConditions)+
+                   voidOnTick.voidOnTick();
 
             String temp = bot.step2ResultInString;
             bot.setStep2ResultInString(inputs+temp);
