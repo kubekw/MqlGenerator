@@ -1,5 +1,6 @@
 package com.example.application.views.helloworld;
 
+import com.example.application.model.Input;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,6 +14,15 @@ public class Bot {
     public String step3ResultInString;
     List<Object> listOfFunction = new ArrayList<>();
     List<String> listOfOperators = new ArrayList<>();
+    List<Input> listOfInputs = new ArrayList<>();
+
+    public List<Input> getListOfInputs() {
+        return listOfInputs;
+    }
+
+    public void setListOfInputs(List<Input> listOfInputs) {
+        this.listOfInputs = listOfInputs;
+    }
 
     public List<String> getListOfOperators() {
         return listOfOperators;

@@ -45,9 +45,6 @@ public class Step2 extends HorizontalLayout {
     Select<String> selectSellCondition2 = new Select<>();
     Select<String> selectSellOperator = new Select<>();
 
-    List<Input> listOfInputs = new ArrayList<>();
-//    List<String> listOfOperators = new ArrayList<>();
-
 
     List<String> listOfSellConditions = new ArrayList<>();
     List<String> listOfBuyConditions = new ArrayList<>();
@@ -205,7 +202,7 @@ public class Step2 extends HorizontalLayout {
         Select<Input> selectlistOfInputs = new Select<>();
         Button addInput = new Button("Dodaj dane użytkownika");
 
-        selectlistOfInputs.setItems(listOfInputs);
+        selectlistOfInputs.setItems(bot.listOfInputs);
         selectlistOfInputs.setLabel("Dane użytkownika");
         selectlistOfInputs.setItemLabelGenerator(Input::getDisplayName);
 
@@ -233,9 +230,9 @@ public class Step2 extends HorizontalLayout {
 
                 }
 
-                listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue().toString(),inputDisplayName.getValue()));
+                bot.listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue().toString(),inputDisplayName.getValue()));
                // System.out.println(listOfInputs.get(listOfInputs.size()-1).toString());
-                selectlistOfInputs.setItems(listOfInputs);
+                selectlistOfInputs.setItems(bot.listOfInputs);
                 try {
                     refreshListsOfVarNames();
                 } catch (IllegalAccessException illegalAccessException) {
@@ -442,7 +439,7 @@ public class Step2 extends HorizontalLayout {
             listOfVarNames.add(name);
         }
 
-        for (Input input : listOfInputs) {
+        for (Input input : bot.getListOfInputs()) {
             listOfInputNames.add(input.getName());
         }
         namesListToConditions.addAll(listOfVarNames);
@@ -464,10 +461,6 @@ public class Step2 extends HorizontalLayout {
                 return;
             };
 
-            String inputs = "";
-            for(Input i : listOfInputs){
-                inputs=inputs+i.toString();
-            }
 
             Set<String> variblesToInitial = new TreeSet<>();
             for(String str : usedFunctionsNames){
@@ -484,7 +477,7 @@ public class Step2 extends HorizontalLayout {
                 listOfBuyConditions.add("false");
             }
 
-           String step2Result =inputs + CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(usedFunctions,variblesToInitial,listOfSellConditions,listOfBuyConditions);
+           String step2Result = CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(usedFunctions,variblesToInitial,listOfSellConditions,listOfBuyConditions);
             bot.step2ResultInString=step2Result;
             System.out.println(step2Result);
 

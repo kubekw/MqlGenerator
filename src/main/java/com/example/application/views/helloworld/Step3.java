@@ -47,10 +47,6 @@ public class Step3 extends HorizontalLayout {
     Select<String> selectCloseSellCondition2 = new Select<>();
     Select<String> selectCloseSellOperator = new Select<>();
 
-    List<Input> listOfInputs = new ArrayList<>();
-//    List<String> listOfOperators = new ArrayList<>();
-
-
     List<String> listOfCloseSellConditions = new ArrayList<>();
     List<String> listOfCloseBuyConditions = new ArrayList<>();
     Text listOfCloseBuyConditionsTxt = new Text(listOfCloseBuyConditions.toString());
@@ -204,7 +200,7 @@ public class Step3 extends HorizontalLayout {
         Select<Input> selectlistOfInputs = new Select<>();
         Button addInput = new Button("Dodaj dane użytkownika");
 
-        selectlistOfInputs.setItems(listOfInputs);
+        selectlistOfInputs.setItems(bot.listOfInputs);
         selectlistOfInputs.setLabel("Dane użytkownika");
         selectlistOfInputs.setItemLabelGenerator(Input::getDisplayName);
 
@@ -232,9 +228,9 @@ public class Step3 extends HorizontalLayout {
 
                 }
 
-                listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue().toString(),inputDisplayName.getValue()));
+                bot.listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue().toString(),inputDisplayName.getValue()));
                // System.out.println(listOfInputs.get(listOfInputs.size()-1).toString());
-                selectlistOfInputs.setItems(listOfInputs);
+                selectlistOfInputs.setItems(bot.listOfInputs);
                 try {
                     refreshListsOfVarNames();
                 } catch (IllegalAccessException illegalAccessException) {
@@ -444,7 +440,7 @@ public class Step3 extends HorizontalLayout {
             listOfVarNames.add(name);
         }
 
-        for (Input input : listOfInputs) {
+        for (Input input : bot.getListOfInputs()) {
             listOfInputNames.add(input.getName());
         }
         namesListToConditions.addAll(listOfVarNames);
@@ -467,7 +463,7 @@ public class Step3 extends HorizontalLayout {
             };
 
             String inputs = "\n";
-            for(Input i : listOfInputs){
+            for(Input i : bot.getListOfInputs()){
                 inputs=inputs+i.toString();
             }
 
