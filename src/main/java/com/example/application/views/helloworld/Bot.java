@@ -11,9 +11,9 @@ import java.util.TreeSet;
 @Component
 public class Bot {
 
-    public String step1ResultInString;
-    public String step2ResultInString;
-    public String step3ResultInString;
+    String step1ResultInString;
+    String step2ResultInString;
+    String step3ResultInString;
     List<Object> listOfFunction = new ArrayList<>();
     List<String> listOfOperators = new ArrayList<>();
     List<Input> listOfInputs = new ArrayList<>();
