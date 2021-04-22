@@ -4,7 +4,9 @@ import com.example.application.model.Input;
 import com.example.application.model.functions.MA;
 import com.example.application.model.functions.Momentum;
 import com.example.application.model.functions.Rsi;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Component
+@Scope(WebApplicationContext.SCOPE_SESSION)
 public class Bot {
 
     String step1ResultInString;
