@@ -1,6 +1,9 @@
 package com.example.application.views.helloworld;
 
 import com.example.application.model.Input;
+import com.example.application.model.functions.MA;
+import com.example.application.model.functions.Momentum;
+import com.example.application.model.functions.Rsi;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,6 +23,21 @@ public class Bot {
     Set<String> listOfVarNames = new TreeSet<>();
     Set<String> listOfInputNames = new TreeSet<>();
     Set<String> namesListToConditions = new TreeSet<>();
+
+    public Bot() {
+        listOfOperators.add(" > ");
+        listOfOperators.add(" = ");
+        listOfOperators.add(" < ");
+        namesListToConditions.add("Ask");
+        namesListToConditions.add("Bid");
+
+        Rsi rsi = new Rsi();
+        MA ma = new MA();
+        Momentum momentum = new Momentum();
+        listOfFunction.add(rsi);
+        listOfFunction.add(ma);
+        listOfFunction.add(momentum);
+    }
 
     public Set<String> getNamesListToConditions() {
         return namesListToConditions;

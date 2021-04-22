@@ -36,6 +36,7 @@ public class MainView extends AppLayout {
     private H1 viewTitle;
 
     public MainView() {
+
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
         menu = createMenu();

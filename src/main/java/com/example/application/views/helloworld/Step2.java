@@ -19,6 +19,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -50,25 +51,16 @@ public class Step2 extends HorizontalLayout {
     Set<String> usedFunctionsNames = new TreeSet<>();
     Set<String> usedFunctions = new TreeSet<>();
 
-    //TODO - STANDARD INPUTS BEFORE NEXT STEP
+    Text standardInputsText = new Text("Ustal domyślne wartości dla podstawowych parametrów");
+    NumberField lotSize = new NumberField("Lot size");
+    IntegerField takeProfitLevel = new IntegerField("Take Profit");
+    IntegerField stopLossLevel = new IntegerField("Stop Loss");
+
+
 
     public Step2(Bot bot) throws IllegalAccessException {
         this.bot = bot;
         addClassName("hello-world-view");
-
-        bot.listOfOperators.add(" > ");
-        bot.listOfOperators.add(" = ");
-        bot.listOfOperators.add(" < ");
-        bot.namesListToConditions.add("Ask");
-        bot.namesListToConditions.add("Bid");
-
-        Rsi rsi = new Rsi();
-        MA ma = new MA();
-        Momentum momentum = new Momentum();
-        bot.listOfFunction.add(rsi);
-        bot.listOfFunction.add(ma);
-        bot.listOfFunction.add(momentum);
-
 
         add(funcEditor());
         add(inputs());
@@ -76,6 +68,7 @@ public class Step2 extends HorizontalLayout {
         add(buyConditionsList());
         add(sellConditions());
         add(sellConditionsList());
+        add(standardInputs());
         add(generateVoidCheckForOpen());
 
         NativeButton buttonNavi = new NativeButton(
@@ -85,6 +78,48 @@ public class Step2 extends HorizontalLayout {
                         ui.navigate("step1"))
         );
         add(buttonNavi);
+    }
+
+    private Component standardInputs(){
+        HorizontalLayout layout = new HorizontalLayout();
+
+        lotSize.setHasControls(true);
+        lotSize.setValue(0.1);
+        lotSize.setStep(0.01);
+        lotSize.setMin(0);
+
+        takeProfitLevel.setHasControls(true);
+        takeProfitLevel.setValue(400);
+        takeProfitLevel.setStep(1);
+        takeProfitLevel.setMin(0);
+
+        stopLossLevel.setHasControls(true);
+        stopLossLevel.setValue(400);
+        stopLossLevel.setStep(1);
+        stopLossLevel.setMin(0);
+
+        add(standardInputsText);
+        layout.add(lotSize);
+        layout.add(takeProfitLevel);
+        layout.add(stopLossLevel);
+
+        return layout;
+    }
+// TODO przerobić na Stringi dodawane przed Step 2
+    String addStendardInputsvoid(){
+
+        return"input double Lots = "+lotSize.getValue().toString()+";  //Lot\n" +
+                "input int TakeProfit = "+ takeProfitLevel.getValue().toString()+ ";  //Take Profit\n"+
+                "input int StopLoss = " + stopLossLevel.getValue().toString()+";  //Stop Loss\n"+
+                "\n";
+//
+//        Input lot = new Input("double", "Lots",lotSize.getValue().toString(),"Lot");
+//        bot.listOfInputs.add(lot);
+//        Input takeProfit = new Input("int", "TakeProfit",takeProfitLevel.getValue().toString(),"Take Profit");
+//        bot.listOfInputs.add(takeProfit);
+//        Input stopLoss = new Input("int", "StopLoss",stopLossLevel.getValue().toString(),"Stop Loss");
+//        bot.listOfInputs.add(stopLoss);
+
     }
 
     private Component funcEditor(){
@@ -457,8 +492,7 @@ public class Step2 extends HorizontalLayout {
 
             if (!listOfConditionsIsOK()){
                 return;
-            };
-
+            }
 
             Set<String> variblesToInitial = new TreeSet<>();
             for(String str : usedFunctionsNames){
@@ -475,7 +509,8 @@ public class Step2 extends HorizontalLayout {
                 listOfBuyConditions.add("false");
             }
 
-           String step2Result = CalcOpenPos.calculateCurrentOrders() + voidCheckForOpen.CheckForOpen(usedFunctions,variblesToInitial,listOfSellConditions,listOfBuyConditions);
+           String step2Result = addStendardInputsvoid()+CalcOpenPos.calculateCurrentOrders() +
+                   voidCheckForOpen.CheckForOpen(usedFunctions,variblesToInitial,listOfSellConditions,listOfBuyConditions);
             bot.step2ResultInString=step2Result;
             System.out.println(step2Result);
 

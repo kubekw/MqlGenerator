@@ -25,7 +25,7 @@ public class Download extends VerticalLayout {
 
         TextField filenameTextField = new TextField("Wprowadź nazwę dla pliku ");
 
-        Anchor anchor = new Anchor(getStreamResource("file.mq4", this.bot.botGenerator()), "Kliknij sby pobrać plik");
+        Anchor anchor = new Anchor(getStreamResource("file.mq4", this.bot.botGenerator()), "Kliknij aby pobrać plik");
         anchor.getElement().setAttribute("download",true);
         //TODO inny listener ! bbutton ?
         filenameTextField.addValueChangeListener(e -> {
