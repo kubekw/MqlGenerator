@@ -16,7 +16,6 @@ import com.vaadin.flow.router.RouteAlias;
 import java.util.Random;
 
 @Route(value = "step1", layout = MainView.class)
-@RouteAlias(value = "", layout = MainView.class)
 @PageTitle("Krok pierwszy")
 @CssImport("./views/helloworld/hello-world-view.css")
 public class Step1 extends HorizontalLayout {

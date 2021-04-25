@@ -83,7 +83,7 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Bot Generator", Step1.class), createTab("About", AboutView.class),
+        return new Tab[]{createTab("Start", AboutView.class),createTab("Bot Generator", Step1.class),
                 createTab("Nowa Strona", AboutView2.class)};
     }
 
