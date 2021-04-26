@@ -17,15 +17,15 @@ import java.util.TreeSet;
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class Bot {
 
-    public String step1ResultInString;
-    public String step2ResultInString;
-    public String step3ResultInString;
-    public List<Object> listOfFunction = new ArrayList<>();
-    public List<String> listOfOperators = new ArrayList<>();
-    public List<Input> listOfInputs = new ArrayList<>();
-    public Set<String> listOfVarNames = new TreeSet<>();
-    public Set<String> listOfInputNames = new TreeSet<>();
-    public Set<String> namesListToConditions = new TreeSet<>();
+     String step1ResultInString;
+     String step2ResultInString;
+     String step3ResultInString;
+     List<Object> listOfFunction = new ArrayList<>();
+     List<String> listOfOperators = new ArrayList<>();
+     List<Input> listOfInputs = new ArrayList<>();
+     Set<String> listOfVarNames = new TreeSet<>();
+     Set<String> listOfInputNames = new TreeSet<>();
+     Set<String> namesListToConditions = new TreeSet<>();
 
     public Bot() {
         listOfOperators.add(" > ");
@@ -40,6 +40,27 @@ public class Bot {
         listOfFunction.add(rsi);
         listOfFunction.add(ma);
         listOfFunction.add(momentum);
+    }
+
+    public void listOfInputsAdd(Input input) {
+         listOfInputs.add(input);
+    }
+
+    public void listOfInputNamesAdd(String s) {
+         listOfInputNames.add(s);
+    }
+
+    public void refreshNamesListToConditions(){
+        namesListToConditions.addAll(getListOfVarNames());
+        namesListToConditions.addAll(getListOfInputNames());
+    }
+
+    public  void listOfVarNamesAdd(String s) {
+         listOfVarNames.add(s);
+    }
+
+    public  void listOfFunctionAdd(Object o) {
+         listOfFunction.add(o);
     }
 
     public Set<String> getNamesListToConditions() {

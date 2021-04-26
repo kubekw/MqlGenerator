@@ -89,7 +89,7 @@ public class Step3 extends HorizontalLayout {
 
         Select<Object> select = new Select<>();
         select.setLabel("Dostępne typy funkcji");
-        select.setItems(bot.listOfFunction);
+        select.setItems(bot.getListOfFunction());
         select.setItemLabelGenerator(o -> {
             return o.toString().substring(0,o.toString().indexOf("="));
         });
@@ -128,7 +128,7 @@ public class Step3 extends HorizontalLayout {
 
             saveButton.addClickListener(event-> {
 
-                if(bot.namesListToConditions.contains(textFieldList.get(0).getValue())){
+                if(bot.getNamesListToConditions().contains(textFieldList.get(0).getValue())){
                     textFieldList.get(0).setInvalid(true);
                     Notification.show("ERROR - Zmienna o podanej nazwie już istnieje",
                             5000, Notification.Position.MIDDLE);
@@ -138,12 +138,12 @@ public class Step3 extends HorizontalLayout {
 
                 if (select.getValue().getClass() == MA.class){
                     try {
-                        bot.listOfFunction.add(new MA(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
+                        bot.listOfFunctionAdd(new MA(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
                                 textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue(),
                                 textFieldList.get(6).getValue(), textFieldList.get(7).getValue()));
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
-                        select.setItems(bot.listOfFunction);
-                        bot.listOfVarNames.add(textFieldList.get(0).getValue());
+                        select.setItems(bot.getListOfFunction());
+                        bot.listOfVarNamesAdd(textFieldList.get(0).getValue());
                         try {
                             refreshListsOfVarNames();
                         } catch (IllegalAccessException illegalAccessException) {
@@ -160,11 +160,11 @@ public class Step3 extends HorizontalLayout {
 
                 if (select.getValue().getClass() == Rsi.class){
                     try {
-                        bot.listOfFunction.add(new Rsi(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
+                        bot.listOfFunctionAdd(new Rsi(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
                                 textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue()));
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
-                        select.setItems(bot.listOfFunction);
-                        bot.listOfVarNames.add(textFieldList.get(0).getValue());
+                        select.setItems(bot.getListOfFunction());
+                        bot.listOfVarNamesAdd(textFieldList.get(0).getValue());
                         try {
                             refreshListsOfVarNames();
                         } catch (IllegalAccessException illegalAccessException) {
@@ -180,11 +180,11 @@ public class Step3 extends HorizontalLayout {
                 }
                 if (select.getValue().getClass() == Momentum.class){
                     try {
-                        bot.listOfFunction.add(new Momentum(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
+                        bot.listOfFunctionAdd(new Momentum(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
                                 textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue()));
                         Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
-                        select.setItems(bot.listOfFunction);
-                        bot.listOfVarNames.add(textFieldList.get(0).getValue());
+                        select.setItems(bot.getListOfFunction());
+                        bot.listOfVarNamesAdd(textFieldList.get(0).getValue());
                         try {
                             refreshListsOfVarNames();
                         } catch (IllegalAccessException illegalAccessException) {
@@ -220,7 +220,7 @@ public class Step3 extends HorizontalLayout {
         Select<Input> selectlistOfInputs = new Select<>();
         Button addInput = new Button("Dodaj dane użytkownika");
 
-        selectlistOfInputs.setItems(bot.listOfInputs);
+        selectlistOfInputs.setItems(bot.getListOfInputs());
         selectlistOfInputs.setLabel("Dane użytkownika");
         selectlistOfInputs.setItemLabelGenerator(Input::getDisplayName);
 
@@ -240,7 +240,7 @@ public class Step3 extends HorizontalLayout {
 
             saveInput.addClickListener(buttonClickEvent -> {
 
-                if(bot.namesListToConditions.contains(inputName.getValue())){
+                if(bot.getNamesListToConditions().contains(inputName.getValue())){
                     inputName.setInvalid(true);
                     Notification.show("ERROR - Zmienna o podanej nazwie już istnieje",
                             5000, Notification.Position.MIDDLE);
@@ -248,9 +248,9 @@ public class Step3 extends HorizontalLayout {
 
                 }
 
-                bot.listOfInputs.add(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue().toString(),inputDisplayName.getValue()));
+                bot.listOfInputsAdd(new Input(inputType.getValue(),inputName.getValue(),inputValue.getValue().toString(),inputDisplayName.getValue()));
                // System.out.println(listOfInputs.get(listOfInputs.size()-1).toString());
-                selectlistOfInputs.setItems(bot.listOfInputs);
+                selectlistOfInputs.setItems(bot.getListOfInputs());
                 try {
                     refreshListsOfVarNames();
                 } catch (IllegalAccessException illegalAccessException) {
@@ -276,9 +276,9 @@ public class Step3 extends HorizontalLayout {
         Text buyConditionsText = new Text("Ustal warunki zamknięcia długich pozycji");
 
         refreshListsOfVarNames();//TODO WALIDACJA i opisy
-        selectCloseBuyCondition1.setItems(bot.namesListToConditions);
-        selectOperator.setItems(bot.listOfOperators);
-        selectCloseBuyCondition2.setItems(bot.namesListToConditions);
+        selectCloseBuyCondition1.setItems(bot.getNamesListToConditions());
+        selectOperator.setItems(bot.getListOfOperators());
+        selectCloseBuyCondition2.setItems(bot.getNamesListToConditions());
 
         Button addCondition = new Button("Dodaj Warunek");
         addCondition.addClickListener(e->{
@@ -374,9 +374,9 @@ public class Step3 extends HorizontalLayout {
         Text sellConditionsText = new Text("Ustal warunki zamknięcia któtkich pozycji");
 
         refreshListsOfVarNames();//TODO WALIDACJA i opisy
-        selectCloseSellCondition1.setItems(bot.namesListToConditions);
-        selectCloseSellOperator.setItems(bot.listOfOperators);
-        selectCloseSellCondition2.setItems(bot.namesListToConditions);
+        selectCloseSellCondition1.setItems(bot.getNamesListToConditions());
+        selectCloseSellOperator.setItems(bot.getListOfOperators());
+        selectCloseSellCondition2.setItems(bot.getNamesListToConditions());
 
 
         Button addSellCondition = new Button("Dodaj Warunek");
@@ -457,18 +457,17 @@ public class Step3 extends HorizontalLayout {
             Field[] oGetFields = class2.getDeclaredFields();
            // System.out.println(oGetFields[0].get(o).toString());
             String name = oGetFields[0].get(o).toString();
-            bot.listOfVarNames.add(name);
+            bot.listOfVarNamesAdd(name);
         }
 
         for (Input input : bot.getListOfInputs()) {
-            bot.listOfInputNames.add(input.getName());
+            bot.listOfInputNamesAdd(input.getName());
         }
-        bot.namesListToConditions.addAll(bot.listOfVarNames);
-        bot.namesListToConditions.addAll(bot.listOfInputNames);
-        selectCloseBuyCondition1.setItems(bot.namesListToConditions);
-        selectCloseBuyCondition2.setItems(bot.namesListToConditions);
-        selectCloseSellCondition1.setItems(bot.namesListToConditions);
-        selectCloseSellCondition2.setItems(bot.namesListToConditions);
+        bot.refreshNamesListToConditions();
+        selectCloseBuyCondition1.setItems(bot.getNamesListToConditions());
+        selectCloseBuyCondition2.setItems(bot.getNamesListToConditions());
+        selectCloseSellCondition1.setItems(bot.getNamesListToConditions());
+        selectCloseSellCondition2.setItems(bot.getNamesListToConditions());
 
     }
 
@@ -489,7 +488,7 @@ public class Step3 extends HorizontalLayout {
 
             Set<String> variblesToInitial = new TreeSet<>();
             for(String str : usedFunctionsNames){
-                if(bot.listOfVarNames.contains(str)){
+                if(bot.getListOfVarNames().contains(str)){
                     variblesToInitial.add(str);
                 }
             }
@@ -505,7 +504,7 @@ public class Step3 extends HorizontalLayout {
            String step3Result = voidCheckForClose.checkForClose(usedFunctions, variblesToInitial, listOfCloseSellConditions, listOfCloseBuyConditions)+
                    voidOnTick.voidOnTick();
 
-            String temp = bot.step2ResultInString;
+            String temp = bot.getStep2ResultInString();
             bot.setStep2ResultInString(inputs+temp);
 
             bot.setStep3ResultInString(step3Result);
