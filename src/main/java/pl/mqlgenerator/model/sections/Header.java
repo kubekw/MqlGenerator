@@ -3,11 +3,11 @@ package pl.mqlgenerator.model.sections;
 public class Header {
 
     public static String getHeader(int MAGICMA, String author, String link, String description){
-        return "//+------------------------------------------------------------------+\n" +
+        return  "//----------------------------------------------------------------------\n" +
                 "//|   "+description+"                                                   \n" +
                 "//|   "+author+"                                                        \n" +
                 "//|   "+link+"                                                          \n" +
-                "//+------------------------------------------------------------------+\n" +
+                "//----------------------------------------------------------------------\n" +
                 "#property copyright   "+'"'+author+'"'+"\n" +
                 "#property link        "+'"'+link+'"'+"\n" +
                 "#property description "+'"'+description+'"'+"\n" +

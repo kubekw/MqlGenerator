@@ -17,15 +17,15 @@ import java.util.TreeSet;
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class Bot {
 
-     String step1ResultInString;
-     String step2ResultInString;
-     String step3ResultInString;
-     List<Object> listOfFunction = new ArrayList<>();
-     List<String> listOfOperators = new ArrayList<>();
-     List<Input> listOfInputs = new ArrayList<>();
-     Set<String> listOfVarNames = new TreeSet<>();
-     Set<String> listOfInputNames = new TreeSet<>();
-     Set<String> namesListToConditions = new TreeSet<>();
+     private String step1ResultInString;
+     private String step2ResultInString;
+     private String step3ResultInString;
+     private List<Object> listOfFunction = new ArrayList<>();
+     private List<String> listOfOperators = new ArrayList<>();
+     private List<Input> listOfInputs = new ArrayList<>();
+     private Set<String> listOfVarNames = new TreeSet<>();
+     private Set<String> listOfInputNames = new TreeSet<>();
+     private Set<String> namesListToConditions = new TreeSet<>();
 
     public Bot() {
         listOfOperators.add(" > ");

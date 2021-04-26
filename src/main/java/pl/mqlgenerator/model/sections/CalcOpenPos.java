@@ -25,7 +25,7 @@ public class CalcOpenPos {
                 "   if(buys>0) return(buys);\n" +
                 "   else       return(-sells);\n" +
                 "  } \n"+
-                "//+------------------------------------------------------------------+\n";
+                "\n";
 
     }
 }

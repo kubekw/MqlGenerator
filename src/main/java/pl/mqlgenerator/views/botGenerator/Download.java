@@ -1,5 +1,6 @@
 package pl.mqlgenerator.views.botGenerator;
 
+import com.vaadin.flow.component.textfield.TextArea;
 import pl.mqlgenerator.model.Bot;
 import pl.mqlgenerator.views.main.MainView;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -26,7 +27,7 @@ public class Download extends VerticalLayout {
 
         TextField filenameTextField = new TextField("Wprowadź nazwę dla pliku ");
 
-        Anchor anchor = new Anchor(getStreamResource("file.mq4", this.bot.botGenerator()), "Kliknij aby pobrać plik");
+        Anchor anchor = new Anchor(getStreamResource("file.mq4", this.bot.botGenerator()), "Pobierz plik");
         anchor.getElement().setAttribute("download",true);
         //TODO inny listener ! bbutton ?
         filenameTextField.addValueChangeListener(e -> {
@@ -35,6 +36,15 @@ public class Download extends VerticalLayout {
         });
 
         add(filenameTextField, anchor);
+
+        TextArea textArea = new TextArea("Zawartość pliku do pobrania");
+        textArea.setValue(this.bot.botGenerator());
+        textArea.setSizeFull();
+        textArea.setHeightFull();
+        textArea.setAutoselect(true);
+        textArea.setReadOnly(true);
+
+        add(textArea);
 
     }
 
