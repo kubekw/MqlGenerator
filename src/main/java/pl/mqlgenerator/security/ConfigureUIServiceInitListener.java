@@ -4,6 +4,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
+import pl.mqlgenerator.views.botGenerator.Step2;
 import pl.mqlgenerator.views.login.LoginView;
 import org.springframework.stereotype.Component;
 
@@ -24,5 +25,6 @@ public class ConfigureUIServiceInitListener implements VaadinServiceInitListener
                 && !SecurityUtils.isUserLoggedIn()) {
             event.rerouteTo(LoginView.class);
         }
+
     }
 }

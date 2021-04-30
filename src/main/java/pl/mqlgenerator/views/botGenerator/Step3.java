@@ -1,5 +1,7 @@
 package pl.mqlgenerator.views.botGenerator;
 
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import pl.mqlgenerator.model.Bot;
 import pl.mqlgenerator.model.Input;
 import pl.mqlgenerator.model.functions.MA;
@@ -34,7 +36,7 @@ import java.util.TreeSet;
 @Route(value = "step3", layout = MainView.class)
 @PageTitle("Krok trzeci - warunki zamknięcia zleceń")
 @CssImport("./views/helloworld/hello-world-view.css")
-public class Step3 extends HorizontalLayout {
+public class Step3 extends HorizontalLayout implements BeforeEnterObserver {
 
     private final Bot bot;
 
@@ -53,14 +55,10 @@ public class Step3 extends HorizontalLayout {
     Set<String> usedFunctionsNames = new TreeSet<>();
     Set<String> usedFunctions = new TreeSet<>();
 
-    private HttpSession session;
 
 
-    //TODO - STANDARD INPUTS BEFORE NEXT STEP
-
-    public Step3(Bot bot, HttpSession session) throws IllegalAccessException {
+    public Step3(Bot bot) throws IllegalAccessException {
         this.bot = bot;
-        this.session = session;
 
         addClassName("hello-world-view");
 
@@ -551,6 +549,13 @@ public class Step3 extends HorizontalLayout {
         dialog.add(text,warunek,saveInput);
 
         dialog.open();
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if(bot.getStep1ResultInString()==null || bot.getStep2ResultInString()==null){
+            beforeEnterEvent.rerouteTo(Step1.class);
+        }
     }
 
 

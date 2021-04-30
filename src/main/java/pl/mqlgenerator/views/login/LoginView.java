@@ -12,7 +12,7 @@ import pl.mqlgenerator.views.main.MainView;
 
 import java.util.Collections;
 
-@Route("login")
+@Route(value = "login")
 @PageTitle("Login")
 @CssImport("./views/helloworld/hello-world-view.css")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
