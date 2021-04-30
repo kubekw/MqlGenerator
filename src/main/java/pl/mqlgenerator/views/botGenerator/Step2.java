@@ -579,6 +579,8 @@ public class Step2 extends HorizontalLayout implements BeforeEnterObserver {
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if(bot.getStep1ResultInString()==null){
+            Notification.show("Poprzedni krok nie został ukończony.\n" +
+                    "Wracasz do kroku pierwszego.",5000, Notification.Position.MIDDLE);
             beforeEnterEvent.rerouteTo(Step1.class);
         }
     }

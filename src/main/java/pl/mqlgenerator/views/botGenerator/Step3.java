@@ -550,10 +550,12 @@ public class Step3 extends HorizontalLayout implements BeforeEnterObserver {
 
         dialog.open();
     }
-
+//TODO komunikat
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         if(bot.getStep1ResultInString()==null || bot.getStep2ResultInString()==null){
+            Notification.show("Poprzednie kroki nie zostały ukończone.\n" +
+                    "Wracasz do kroku pierwszego",5000, Notification.Position.MIDDLE);
             beforeEnterEvent.rerouteTo(Step1.class);
         }
     }
