@@ -30,6 +30,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     LoginForm login = new LoginForm();
     Button addUser = new Button("Zarejestruj się");
     TextField userToAdd = new TextField("username");
+    TextField emailtoAdd = new TextField("email");
     PasswordField passwordRoAdd = new PasswordField("password");
 
     PasswordEncoder passwordEncoder =
@@ -47,6 +48,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         addUser.addClickListener(buttonClickEvent -> {
            Dialog dialog = new Dialog();
            dialog.add(userToAdd);
+           dialog.add(emailtoAdd);
            dialog.add(passwordRoAdd);
            dialog.add(new Button("dodaj", buttonClickEvent1 -> {
                if(userToAdd.isEmpty()){
@@ -57,8 +59,13 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
                    passwordRoAdd.setInvalid(true);
                    return;
                }
+               if(emailtoAdd.isEmpty()){
+                   emailtoAdd.setInvalid(true);
+                   return;
+               }
                try {
-                   userRepository.save(new User(userToAdd.getValue(), passwordEncoder.encode(passwordRoAdd.getValue())));
+                   userRepository.save(new User(userToAdd.getValue(), passwordEncoder.encode(passwordRoAdd.getValue()),
+                           emailtoAdd.getValue()));
                    dialog.close();
                }
                catch (Exception e){
