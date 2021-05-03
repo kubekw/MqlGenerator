@@ -53,14 +53,19 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
            dialog.add(new Button("dodaj", buttonClickEvent1 -> {
                if(userToAdd.isEmpty()){
                    userToAdd.setInvalid(true);
+                   Notification.show("Wprowadź nazwę użytkownika",3000, Notification.Position.MIDDLE);
                    return;
                }
                if(passwordRoAdd.isEmpty()){
                    passwordRoAdd.setInvalid(true);
+                   Notification.show("Wprowadź hasło",3000, Notification.Position.MIDDLE);
+
                    return;
                }
-               if(emailtoAdd.isEmpty()){
+               if(emailtoAdd.isEmpty() || !emailtoAdd.getValue().contains("@")
+                       || !emailtoAdd.getValue().contains(".")){
                    emailtoAdd.setInvalid(true);
+                   Notification.show("Wprowadź poprawny adres email",3000, Notification.Position.MIDDLE);
                    return;
                }
                try {

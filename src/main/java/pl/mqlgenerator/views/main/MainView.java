@@ -2,6 +2,8 @@ package pl.mqlgenerator.views.main;
 
 import java.util.Optional;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import pl.mqlgenerator.views.about.AboutView2;
 import pl.mqlgenerator.views.botGenerator.Step1;
 import com.vaadin.flow.component.Component;
@@ -33,6 +35,12 @@ import com.vaadin.flow.component.dependency.CssImport;
 @CssImport("./views/main/main-view.css")
 public class MainView extends AppLayout {
 
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+    String username = ((UserDetails)principal).getUsername();
+
+
     private final Tabs menu;
     private H1 viewTitle;
 
@@ -54,7 +62,7 @@ public class MainView extends AppLayout {
         layout.add(new DrawerToggle());
         viewTitle = new H1();
         layout.add(viewTitle);
-        layout.add(new Avatar());
+        layout.add(new Avatar(username));
         Anchor logout = new Anchor("/logout","Log out");
         layout.add(logout);
         return layout;
