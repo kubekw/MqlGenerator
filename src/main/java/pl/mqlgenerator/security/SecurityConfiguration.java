@@ -1,7 +1,6 @@
 package pl.mqlgenerator.security;
 
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -39,24 +38,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .failureUrl(LOGIN_FAILURE_URL)
                 .and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
     }
-
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user =
-//                User.withUsername("user")
-//                        .password("{noop}password")
-//                        .roles("USER")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
-    @Bean
-    public void createUser(){
-        userRepository.save(new User("kuba","kuba"));
-
-    }
-
 
 
     @Override

@@ -14,6 +14,8 @@ public class MyUserPrincipal implements UserDetails {
         this.user = user;
     }
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -21,11 +23,11 @@ public class MyUserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "{noop}"+user.getPassword();
+        return user.getPassword();
     }
 
     @Override
-    public String getUsername() {
+    public  String getUsername() {
         return user.getUsername();
     }
 

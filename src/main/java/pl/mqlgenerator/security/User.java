@@ -1,6 +1,7 @@
 package pl.mqlgenerator.security;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class User {
@@ -10,8 +11,11 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @NotBlank
     private String username;
 
+    @NotBlank
+    @Column(nullable = false)
     private String password;
 
     public User() {
