@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.mqlgenerator.views.about.AboutView2;
 import pl.mqlgenerator.views.botGenerator.Step1;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
@@ -78,8 +77,8 @@ public class MainView extends AppLayout {
         HorizontalLayout logoLayout = new HorizontalLayout();
         logoLayout.setId("logo");
         logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        logoLayout.add(new Image("images/logo.png", "My App logo"));
-        logoLayout.add(new H1("My App"));
+        logoLayout.add(new Image("images/logo.png", "My logo"));
+        logoLayout.add(new H1("MQL Generator"));
         layout.add(logoLayout, menu);
         return layout;
     }
@@ -94,8 +93,7 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Start", AboutView.class),createTab("Bot Generator", Step1.class),
-                createTab("Nowa Strona", AboutView2.class)};
+        return new Tab[]{createTab("Start", AboutView.class),createTab("Bot Generator", Step1.class)};
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
