@@ -1,6 +1,7 @@
 package pl.mqlgenerator.views.login;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
@@ -13,6 +14,7 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.mqlgenerator.security.User;
@@ -44,13 +46,12 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setJustifyContentMode(JustifyContentMode.CENTER);
         setAlignItems(Alignment.CENTER);
         login.setAction("login");
+        login.setForgotPasswordButtonVisible(false);
 
         addUser.addClickListener(buttonClickEvent -> {
            Dialog dialog = new Dialog();
-           dialog.add(userToAdd);
-           dialog.add(emailtoAdd);
-           dialog.add(passwordRoAdd);
-           dialog.add(new Button("dodaj", buttonClickEvent1 -> {
+           VerticalLayout layout = new VerticalLayout();
+           Button registerButton = new Button("Zarejestruj się", buttonClickEvent1 -> {
                if(userToAdd.isEmpty()){
                    userToAdd.setInvalid(true);
                    Notification.show("Wprowadź nazwę użytkownika",3000, Notification.Position.MIDDLE);
@@ -78,7 +79,14 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
                            3000, Notification.Position.MIDDLE);
                    userToAdd.setInvalid(true);
                }
-           }));
+           });
+           registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+            layout.add(userToAdd);
+            layout.add(emailtoAdd);
+            layout.add(passwordRoAdd);
+            layout.add(registerButton);
+           dialog.add(layout);
            dialog.open();
 
         });
