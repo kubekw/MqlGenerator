@@ -6,6 +6,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
+import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -29,10 +30,26 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     private final UserRepository userRepository;
 
     LoginForm login = new LoginForm();
+
+    private LoginI18n createLoginI18n(){
+        LoginI18n i18n = LoginI18n.createDefault();
+
+        i18n.getForm().setTitle("Zaloguj się aby kontynuować");
+        i18n.getForm().setSubmit("Zaloguj");
+        i18n.getForm().setPassword("Hasło");
+        i18n.getErrorMessage().setTitle("Nieprawidłowe dane!");
+        i18n.getErrorMessage()
+                .setMessage("Spróbuj ponownie.");
+
+        return i18n;
+    }
+
+
+
     Button addUser = new Button("Zarejestruj się");
-    TextField userToAdd = new TextField("username");
-    TextField emailtoAdd = new TextField("email");
-    PasswordField passwordRoAdd = new PasswordField("password");
+    TextField userToAdd = new TextField("Nazwa użytkownika");
+    TextField emailtoAdd = new TextField("Adres email");
+    PasswordField passwordRoAdd = new PasswordField("Hasło");
 
     PasswordEncoder passwordEncoder =
             PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -42,8 +59,11 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         addClassName("login-view");
         setSizeFull();
 
+
+
         setJustifyContentMode(JustifyContentMode.CENTER);
         setAlignItems(Alignment.CENTER);
+        login.setI18n(createLoginI18n());
         login.setAction("login");
         login.setForgotPasswordButtonVisible(false);
 
@@ -89,6 +109,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
            dialog.open();
 
         });
+
 
         add(
                 new H1("Mql Generator"),

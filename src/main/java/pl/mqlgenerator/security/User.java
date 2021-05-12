@@ -10,8 +10,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     @NotBlank
+    @Column(nullable = false, unique = true)
     private String username;
 
     @NotBlank
@@ -22,6 +22,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    // gettery, settery i konstruktory ...
     public User() {
     }
 

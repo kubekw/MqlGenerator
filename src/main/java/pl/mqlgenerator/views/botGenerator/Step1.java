@@ -72,8 +72,7 @@ public class Step1 extends HorizontalLayout {
         website.setSizeFull();
 
         description = new TextField("Opis");
-        description.setValue("Bot dzięki któremu zarobię górę pieniędzy " +
-                "wygenerowany za pomocą kilku kliknięć na mqlGenerator.pl ;-)");
+        description.setValue("Bot wygenerowany za pomocą kilku kliknięć na mqlGenerator.pl ;-)");
         description.setHelperText("Wprowadź opis, który będzie Ci przypominał 'co autor miał na myśli' tworząc bota.");
         description.setAutoselect(true); //TODO do pracy - poprawa UX
         description.setSizeFull();
