@@ -34,9 +34,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     private LoginI18n createLoginI18n(){
         LoginI18n i18n = LoginI18n.createDefault();
 
-        i18n.getForm().setTitle("Zaloguj się aby kontynuować");
+        i18n.getForm().setTitle("Zaloguj się");
         i18n.getForm().setSubmit("Zaloguj");
         i18n.getForm().setPassword("Hasło");
+        i18n.getForm().setUsername("Nazwa użytkownika");
         i18n.getErrorMessage().setTitle("Nieprawidłowe dane!");
         i18n.getErrorMessage()
                 .setMessage("Spróbuj ponownie.");
