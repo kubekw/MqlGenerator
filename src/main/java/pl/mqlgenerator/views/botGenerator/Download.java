@@ -1,10 +1,17 @@
 package pl.mqlgenerator.views.botGenerator;
 
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import pl.mqlgenerator.model.Bot;
+import pl.mqlgenerator.model.BotList;
+import pl.mqlgenerator.model.BotListRepository;
+import pl.mqlgenerator.security.User;
+import pl.mqlgenerator.security.UserRepository;
 import pl.mqlgenerator.views.main.MainView;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
@@ -23,9 +30,13 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
 
 
     private final Bot bot;
+    private final UserRepository userRepository;
+    private final BotListRepository botListRepository;
 
-    public Download(Bot bot)  {
+    public Download(Bot bot, UserRepository userRepository, BotListRepository botListRepository)  {
         this.bot = bot;
+        this.userRepository = userRepository;
+        this.botListRepository = botListRepository;
 
 
         TextField filenameTextField = new TextField("Wprowadź nazwę dla pliku ");
@@ -39,6 +50,19 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
         });
 
         add(filenameTextField, anchor);
+
+        TextField botName = new TextField("Nazwa dla bota do bazy danych");
+        Button saveInDatabaseButton = new Button("Zapisz");
+
+        saveInDatabaseButton.addClickListener(buttonClickEvent -> {
+            if(botName.isEmpty()){
+                botName.setInvalid(true);
+                return;
+            }
+            saveBotInUserDatabase(botName.getValue());
+        });
+
+        add(botName,saveInDatabaseButton);
 
         TextArea textArea = new TextArea("Zawartość pliku do pobrania");
         textArea.setValue(this.bot.botGenerator());
@@ -65,6 +89,13 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
                     "Wracasz do kroku pierwszego.",5000, Notification.Position.MIDDLE);
             beforeEnterEvent.rerouteTo(Step1.class);
         }
+    }
+
+    public void saveBotInUserDatabase(String botname){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepository.findByUsername(((UserDetails)principal).getUsername());
+        botListRepository.save(new BotList(currentUser,botname,this.bot.botGenerator()));
+        Notification.show("Dodano bota do Twojej kolekcji.",3000, Notification.Position.MIDDLE);
     }
 
 }
