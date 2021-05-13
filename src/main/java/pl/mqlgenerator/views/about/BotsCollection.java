@@ -34,8 +34,6 @@ public class BotsCollection extends Div {
         String username = ((UserDetails)principal).getUsername();
 
 
-
-
     public BotsCollection(UserRepository userRepository, BotEntityRepository botEntityRepository) {
         this.userRepository = userRepository;
         this.botEntityRepository = botEntityRepository;
@@ -57,6 +55,12 @@ public class BotsCollection extends Div {
             textArea.setValue(select.getValue().getBotInString());
         });
 
+        Button deleteBot = new Button("usuń");
+        deleteBot.addClickListener(buttonClickEvent -> {
+           //TODO DELETE
+
+        });
+
 
         layout.add( new H1("Cześć "+username+"!"));
 
@@ -67,6 +71,7 @@ public class BotsCollection extends Div {
         else{
             layout.add(new Text("Wybierz bota z listy"));
             layout.add(select);
+            layout.add(deleteBot);
             layout.add(textArea);
         }
 

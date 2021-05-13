@@ -10,7 +10,7 @@ public class BotEntity {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        private Long id;
+        private Integer id;
 
         @ManyToOne()
         private User user;
@@ -36,7 +36,7 @@ public class BotEntity {
 
         }
 
-        public BotEntity(Long id, User user, String botName, String botInString) {
+        public BotEntity(Integer id, User user, String botName, String botInString) {
                 this.id = id;
                 this.user = user;
                 this.botName = botName;
@@ -44,11 +44,11 @@ public class BotEntity {
 
         }
 
-        public Long getId() {
+        public Integer getId() {
                 return id;
         }
 
-        public void setId(Long id) {
+        public void setId(Integer id) {
                 this.id = id;
         }
 

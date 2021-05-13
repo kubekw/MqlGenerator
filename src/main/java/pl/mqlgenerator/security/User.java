@@ -11,7 +11,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<BotEntity> bots;
@@ -38,7 +38,7 @@ public class User {
         this.email = email;
     }
 
-    public User(Long id, String username, String password, String email) {
+    public User(Integer id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -61,11 +61,11 @@ public class User {
         this.email = email;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
