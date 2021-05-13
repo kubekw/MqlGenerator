@@ -8,8 +8,8 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.mqlgenerator.model.Bot;
-import pl.mqlgenerator.model.BotList;
-import pl.mqlgenerator.model.BotListRepository;
+import pl.mqlgenerator.model.BotEntity;
+import pl.mqlgenerator.model.BotEntityRepository;
 import pl.mqlgenerator.security.User;
 import pl.mqlgenerator.security.UserRepository;
 import pl.mqlgenerator.views.main.MainView;
@@ -31,12 +31,12 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
 
     private final Bot bot;
     private final UserRepository userRepository;
-    private final BotListRepository botListRepository;
+    private final BotEntityRepository botEntityRepository;
 
-    public Download(Bot bot, UserRepository userRepository, BotListRepository botListRepository)  {
+    public Download(Bot bot, UserRepository userRepository, BotEntityRepository botEntityRepository)  {
         this.bot = bot;
         this.userRepository = userRepository;
-        this.botListRepository = botListRepository;
+        this.botEntityRepository = botEntityRepository;
 
 
         TextField filenameTextField = new TextField("Wprowadź nazwę dla pliku ");
@@ -73,6 +73,9 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
 
         add(textArea);
 
+
+
+
     }
 
 
@@ -94,7 +97,7 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
     public void saveBotInUserDatabase(String botname){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userRepository.findByUsername(((UserDetails)principal).getUsername());
-        botListRepository.save(new BotList(currentUser,botname,this.bot.botGenerator()));
+        botEntityRepository.save(new BotEntity(currentUser,botname,this.bot.botGenerator()));
         Notification.show("Dodano bota do Twojej kolekcji.",3000, Notification.Position.MIDDLE);
     }
 

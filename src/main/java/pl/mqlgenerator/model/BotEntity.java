@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class BotList {
+public class BotEntity {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,17 +26,17 @@ public class BotList {
 
 
 
-        public BotList() {
+        public BotEntity() {
         }
 
-        public BotList(User user, String botName, String botInString) {
+        public BotEntity(User user, String botName, String botInString) {
                 this.user = user;
                 this.botName = botName;
                 this.botInString = botInString;
 
         }
 
-        public BotList(Long id, User user, String botName, String botInString) {
+        public BotEntity(Long id, User user, String botName, String botInString) {
                 this.id = id;
                 this.user = user;
                 this.botName = botName;

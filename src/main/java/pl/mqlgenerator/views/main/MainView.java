@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.mqlgenerator.views.about.BotsCollection;
 import pl.mqlgenerator.views.botGenerator.Step1;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
@@ -93,7 +94,8 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Start", AboutView.class),createTab("Bot Generator", Step1.class)};
+        return new Tab[]{createTab("Start", AboutView.class),createTab("Bot Generator", Step1.class),
+                createTab("Moja kolakcja botów", BotsCollection.class)};
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {

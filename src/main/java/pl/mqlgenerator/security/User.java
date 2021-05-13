@@ -1,6 +1,6 @@
 package pl.mqlgenerator.security;
 
-import pl.mqlgenerator.model.BotList;
+import pl.mqlgenerator.model.BotEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,8 +13,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "user")
-    private List<BotList> bots;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BotEntity> bots;
 
     @NotBlank
     @Column(nullable = false, unique = true)
@@ -45,11 +45,11 @@ public class User {
         this.email = email;
     }
 
-    public List<BotList> getBots() {
+    public List<BotEntity> getBots() {
         return bots;
     }
 
-    public void setBots(List<BotList> bots) {
+    public void setBots(List<BotEntity> bots) {
         this.bots = bots;
     }
 
