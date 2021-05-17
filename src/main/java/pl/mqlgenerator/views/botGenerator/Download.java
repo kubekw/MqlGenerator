@@ -43,7 +43,6 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
 
         Anchor anchor = new Anchor(getStreamResource("file.mq4", this.bot.botGenerator()), "Pobierz plik na dysk");
         anchor.getElement().setAttribute("download",true);
-        //TODO inny listener ! bbutton ?
         filenameTextField.addValueChangeListener(e -> {
 
             anchor.setHref(getStreamResource(filenameTextField.getValue()+".mq4", this.bot.botGenerator() ));

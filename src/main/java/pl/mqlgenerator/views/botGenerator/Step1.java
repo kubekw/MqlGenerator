@@ -1,5 +1,6 @@
 package pl.mqlgenerator.views.botGenerator;
 
+import com.vaadin.flow.component.button.ButtonVariant;
 import pl.mqlgenerator.model.Bot;
 import pl.mqlgenerator.model.sections.Header;
 import pl.mqlgenerator.views.main.MainView;
@@ -86,6 +87,7 @@ public class Step1 extends HorizontalLayout {
         //TESTER
         //TODO Przykład walidacji do pracy
         saveAngGotoStep2 = new Button("Przejdź do kolejnego kroku");
+        saveAngGotoStep2.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         saveAngGotoStep2.setAutofocus(true);
         saveAngGotoStep2.addClickListener(e-> {
             if (magicma.getValue() == null) {
