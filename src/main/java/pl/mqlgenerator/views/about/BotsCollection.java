@@ -73,13 +73,15 @@ public class BotsCollection extends Div {
 
         });
 
-        layout.add( new H1("Cześć "+username+"!"));
+
 
 
         if(botsCollection.isEmpty()){
+            layout.add( new H1("Cześć "+username+"!"));
             layout.add(new Text("Nie masz jeszcze żadnych stworzonych botów"));
         }
         else{
+            layout.add( new H1(username+", oto twoje bociki: "));
             layout.add(new Text("Wybierz bota z listy"));
             layout.add(select);
             layout.add(anchor);
