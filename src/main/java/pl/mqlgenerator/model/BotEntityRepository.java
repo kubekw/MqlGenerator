@@ -4,8 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BotEntityRepository extends JpaRepository<BotEntity, Integer> {
 
-    @Override
-    default void deleteById(Integer integer) {
+
+    public default void deleteBotEntityById(Integer id){
+
 
     }
 }

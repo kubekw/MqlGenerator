@@ -39,9 +39,9 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
         this.botEntityRepository = botEntityRepository;
 
 
-        TextField filenameTextField = new TextField("Wprowadź nazwę dla pliku ");
+        TextField filenameTextField = new TextField("Wprowadź nazwę bota ");
 
-        Anchor anchor = new Anchor(getStreamResource("file.mq4", this.bot.botGenerator()), "Pobierz plik");
+        Anchor anchor = new Anchor(getStreamResource("file.mq4", this.bot.botGenerator()), "Pobierz plik na dysk");
         anchor.getElement().setAttribute("download",true);
         //TODO inny listener ! bbutton ?
         filenameTextField.addValueChangeListener(e -> {
@@ -49,20 +49,20 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
             anchor.setHref(getStreamResource(filenameTextField.getValue()+".mq4", this.bot.botGenerator() ));
         });
 
-        add(filenameTextField, anchor);
 
-        TextField botName = new TextField("Nazwa dla bota do bazy danych");
-        Button saveInDatabaseButton = new Button("Zapisz");
+
+        Button saveInDatabaseButton = new Button("Zapisz do swojej kolekcji");
 
         saveInDatabaseButton.addClickListener(buttonClickEvent -> {
-            if(botName.isEmpty()){
-                botName.setInvalid(true);
+            if(filenameTextField.isEmpty()){
+                filenameTextField.setInvalid(true);
                 return;
             }
-            saveBotInUserDatabase(botName.getValue());
+            saveBotInUserDatabase(filenameTextField.getValue());
         });
 
-        add(botName,saveInDatabaseButton);
+        add(filenameTextField,anchor,saveInDatabaseButton);
+
 
         TextArea textArea = new TextArea("Zawartość pliku do pobrania");
         textArea.setValue(this.bot.botGenerator());
@@ -72,8 +72,6 @@ public class Download extends VerticalLayout implements BeforeEnterObserver {
         textArea.setReadOnly(true);
 
         add(textArea);
-
-
 
 
     }

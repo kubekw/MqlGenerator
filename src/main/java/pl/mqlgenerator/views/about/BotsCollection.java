@@ -55,12 +55,13 @@ public class BotsCollection extends Div {
             textArea.setValue(select.getValue().getBotInString());
         });
 
+
         Button deleteBot = new Button("usuń");
         deleteBot.addClickListener(buttonClickEvent -> {
            //TODO DELETE
 
-        });
 
+        });
 
         layout.add( new H1("Cześć "+username+"!"));
 
@@ -78,8 +79,7 @@ public class BotsCollection extends Div {
 
         add(layout);
 
-
-
     }
+
 
 }
