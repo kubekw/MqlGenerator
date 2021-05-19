@@ -106,14 +106,6 @@ public class Step1 extends HorizontalLayout {
         add(saveAngGotoStep2);
 
 
-        NativeButton buttonNavi = new NativeButton(
-                "Powrót do początku");
-        buttonNavi.addClickListener(e ->
-                buttonNavi.getUI().ifPresent(ui ->
-                        ui.navigate("step1"))
-        );
-        add(buttonNavi);
-
 
     }
 

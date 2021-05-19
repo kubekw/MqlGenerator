@@ -13,7 +13,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")//, cascade = CascadeType.ALL)
     private List<BotEntity> bots;
 
     @NotBlank

@@ -15,7 +15,6 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.mqlgenerator.security.User;
@@ -46,11 +45,11 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         return i18n;
     }
 
-
+    H1 register = new H1("Zarejestruj się");
     Button addUser = new Button("Zarejestruj się");
     TextField userToAdd = new TextField("Nazwa użytkownika");
     TextField emailtoAdd = new TextField("Adres email");
-    PasswordField passwordRoAdd = new PasswordField("Hasło");
+    PasswordField passwordToAdd = new PasswordField("Hasło");
 
     PasswordEncoder passwordEncoder =
             PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -59,7 +58,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         this.userRepository = userRepository;
         addClassName("login-view");
         setSizeFull();
-
 
 
         setJustifyContentMode(JustifyContentMode.CENTER);
@@ -77,8 +75,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
                    Notification.show("Wprowadź nazwę użytkownika",3000, Notification.Position.MIDDLE);
                    return;
                }
-               if(passwordRoAdd.isEmpty()){
-                   passwordRoAdd.setInvalid(true);
+               if(passwordToAdd.isEmpty()){
+                   passwordToAdd.setInvalid(true);
                    Notification.show("Wprowadź hasło",3000, Notification.Position.MIDDLE);
 
                    return;
@@ -90,7 +88,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
                    return;
                }
                try {
-                   userRepository.save(new User(userToAdd.getValue(), passwordEncoder.encode(passwordRoAdd.getValue()),
+                   userRepository.save(new User(userToAdd.getValue(), passwordEncoder.encode(passwordToAdd.getValue()),
                            emailtoAdd.getValue()));
                    dialog.close();
                }
@@ -102,9 +100,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
            });
            registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
+            layout.add(register);
             layout.add(userToAdd);
             layout.add(emailtoAdd);
-            layout.add(passwordRoAdd);
+            layout.add(passwordToAdd);
             layout.add(registerButton);
            dialog.add(layout);
            dialog.open();
