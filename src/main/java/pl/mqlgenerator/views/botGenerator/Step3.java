@@ -154,6 +154,7 @@ public class Step3 extends HorizontalLayout implements BeforeEnterObserver {
                                 5000, Notification.Position.MIDDLE);
                         return;
                     }
+                    return;
                 }
 
                 if (select.getValue().getClass() == Rsi.class){
@@ -175,6 +176,8 @@ public class Step3 extends HorizontalLayout implements BeforeEnterObserver {
                                 5000, Notification.Position.MIDDLE);
                         return;
                     }
+                    return;
+
                 }
                 if (select.getValue().getClass() == Momentum.class){
                     try {
@@ -195,6 +198,8 @@ public class Step3 extends HorizontalLayout implements BeforeEnterObserver {
                                 5000, Notification.Position.MIDDLE);
                         return;
                     }
+                    return;
+
                 }
                 else{
                     return;
