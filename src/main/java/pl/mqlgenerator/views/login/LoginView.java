@@ -50,6 +50,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     TextField userToAdd = new TextField("Nazwa użytkownika");
     TextField emailtoAdd = new TextField("Adres email");
     PasswordField passwordToAdd = new PasswordField("Hasło");
+    PasswordField passwordToAdd2 = new PasswordField("Powtórz hasło");
 
     PasswordEncoder passwordEncoder =
             PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -70,6 +71,12 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
            Dialog dialog = new Dialog();
            VerticalLayout layout = new VerticalLayout();
            Button registerButton = new Button("Zarejestruj się", buttonClickEvent1 -> {
+               if(!passwordToAdd.getValue().equals(passwordToAdd2.getValue())){
+                   passwordToAdd.setInvalid(true);
+                   passwordToAdd2.setInvalid(true);
+                   Notification.show("Wpisano różne hasła", 2000, Notification.Position.MIDDLE);
+                   return;
+               }
                if(userToAdd.isEmpty()){
                    userToAdd.setInvalid(true);
                    Notification.show("Wprowadź nazwę użytkownika",3000, Notification.Position.MIDDLE);
@@ -91,11 +98,13 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
                    userRepository.save(new User(userToAdd.getValue(), passwordEncoder.encode(passwordToAdd.getValue()),
                            emailtoAdd.getValue()));
                    dialog.close();
+                   Notification.show("Utworzono konto. Możesz się zalogować.", 2000, Notification.Position.MIDDLE);
                }
                catch (Exception e){
                    Notification.show("Użytkownik o podanej nazwie już istnieje",
                            3000, Notification.Position.MIDDLE);
                    userToAdd.setInvalid(true);
+
                }
            });
            registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -104,6 +113,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
             layout.add(userToAdd);
             layout.add(emailtoAdd);
             layout.add(passwordToAdd);
+            layout.add(passwordToAdd2);
             layout.add(registerButton);
            dialog.add(layout);
            dialog.open();
