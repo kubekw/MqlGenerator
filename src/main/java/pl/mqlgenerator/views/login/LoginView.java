@@ -52,6 +52,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     PasswordField passwordToAdd = new PasswordField("Hasło");
     PasswordField passwordToAdd2 = new PasswordField("Powtórz hasło");
 
+    //TEST
+
     PasswordEncoder passwordEncoder =
             PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
