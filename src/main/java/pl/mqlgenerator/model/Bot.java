@@ -1,12 +1,12 @@
 package pl.mqlgenerator.model;
 
-import pl.mqlgenerator.model.Input;
 import pl.mqlgenerator.model.functions.MA;
 import pl.mqlgenerator.model.functions.Momentum;
 import pl.mqlgenerator.model.functions.Rsi;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
+import pl.mqlgenerator.model.functions.Stochastic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,12 @@ public class Bot {
         Rsi rsi = new Rsi();
         MA ma = new MA();
         Momentum momentum = new Momentum();
+        Stochastic stochastic = new Stochastic();
+
         listOfFunction.add(rsi);
         listOfFunction.add(ma);
         listOfFunction.add(momentum);
+        listOfFunction.add(stochastic);
     }
 
     public void listOfInputsAdd(Input input) {

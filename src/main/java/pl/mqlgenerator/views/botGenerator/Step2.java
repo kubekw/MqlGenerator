@@ -7,6 +7,7 @@ import pl.mqlgenerator.model.Input;
 import pl.mqlgenerator.model.functions.MA;
 import pl.mqlgenerator.model.functions.Momentum;
 import pl.mqlgenerator.model.functions.Rsi;
+import pl.mqlgenerator.model.functions.Stochastic;
 import pl.mqlgenerator.model.sections.CalcOpenPos;
 import pl.mqlgenerator.model.sections.voidCheckForOpen;
 import pl.mqlgenerator.views.main.MainView;
@@ -170,6 +171,30 @@ public class Step2 extends HorizontalLayout implements BeforeEnterObserver {
                             5000, Notification.Position.MIDDLE);
                     return;
 
+                }
+
+                if (select.getValue().getClass() == Stochastic.class){
+                    try {
+                        bot.listOfFunctionAdd(new Stochastic(textFieldList.get(0).getValue(), textFieldList.get(1).getValue(), textFieldList.get(2).getValue(),
+                                textFieldList.get(3).getValue(), textFieldList.get(4).getValue(), textFieldList.get(5).getValue(),
+                                textFieldList.get(6).getValue(), textFieldList.get(7).getValue(), textFieldList.get(8).getValue(),
+                                textFieldList.get(9).getValue()));
+                        Notification.show("Zapisano",1500, Notification.Position.MIDDLE);
+                        select.setItems(bot.getListOfFunction());
+                        bot.listOfVarNamesAdd(textFieldList.get(0).getValue());
+                        try {
+                            refreshListsOfVarNames();
+                        } catch (IllegalAccessException illegalAccessException) {
+                            illegalAccessException.printStackTrace();
+                        }
+                        dialog.close();
+                    }
+                    catch (Exception exception){
+                        Notification.show("ERROR - NIEPRAWIDŁOWE DANE.  "+exception.toString(),
+                                5000, Notification.Position.MIDDLE);
+                        return;
+                    }
+                    return;
                 }
 
                 if (select.getValue().getClass() == MA.class){
